@@ -55,7 +55,7 @@ class Welcome extends Component {
       return (
           <Modal 
             isVisible={this.props.modalVisible}
-            backdropColor={'#f00'}
+            backdropColor={'#ab4949'}
             deviceWidth={deviceWidth}
             deviceHeight={deviceHeight}
             backdropOpacity={1}
@@ -81,7 +81,7 @@ class Welcome extends Component {
     })
     return (
       <View style={[styles.container, {opacity: this.state.opacity}]}>
-      <StatusBar backgroundColor='#e00'/>
+      <StatusBar backgroundColor='#ab4949'/>
       <Animated.View style={[styles.animted, {marginLeft} ]} >
             <Text style={styles.text}>MarmitaUai</Text>
         </Animated.View>

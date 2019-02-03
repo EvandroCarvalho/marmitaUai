@@ -11,19 +11,7 @@ const stack = createStackNavigator({
         screen: WelcomeScreen 
     },
     ListRestaurants: {
-        screen: ListRestaurants,
-        navigationOptions: {
-            title: 'Retaurantes próximos',
-            headerTitleStyle: {
-                width: "90%",
-                textAlign: 'center'
-            },
-            headerStyle: {
-                backgroundColor: '#e00'
-            },
-            headerTintColor: '#aee',
-            headerLeft: null
-        }
+        screen: ListRestaurants
     },
     RegisterUserLocationScreen: {
         screen: RegisterUserLocationScreen,
@@ -35,13 +23,13 @@ const stack = createStackNavigator({
                 textAlign: 'center'
             },
             headerStyle: {
-                backgroundColor:"#e00"
+                backgroundColor:"#ab4949"
             },
-            headerTintColor: '#aee'
+            headerTintColor: '#fff'
         }
     }
 }, {
-    initialRouteKey : 'Welcome'
+  //  initialRouteName : 'ListRestaurants'
 })
 
 
