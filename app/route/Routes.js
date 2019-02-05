@@ -23,13 +23,13 @@ const stack = createStackNavigator({
                 textAlign: 'center'
             },
             headerStyle: {
-                backgroundColor:"#ab4949"
+                backgroundColor:"#f1be13"
             },
             headerTintColor: '#fff'
         }
     }
 }, {
-  //  initialRouteName : 'ListRestaurants'
+  //initialRouteName : 'ListRestaurants'
 })
 
 

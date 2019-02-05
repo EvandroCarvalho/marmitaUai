@@ -31,8 +31,10 @@ getGetlocationError = (dispach,navigation) => {
 }
 
  export const getLocationAPI = (address, navigation) => {
-    console.log(navigation)
     return dispatch => {
+        dispatch({
+            type: 'loading'
+        })
         let url = `https://maps.googleapis.com/maps/api/geocode/json?address=${address.number}+${address.street}+${address.city}&key=AIzaSyBBnjp4mPMBFKOr65qoagqyO4w7ByInSl8`
         const result = fetch(url)
         result.then(body => body.json())

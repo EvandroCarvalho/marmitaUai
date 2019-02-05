@@ -1,16 +1,41 @@
 import React from 'react'
-import { TouchableOpacity, Text, StyleSheet } from 'react-native'
+import { TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native'
+import { connect } from 'react-redux'
 
-const ButtomCustomer = (props) => (
-  <TouchableOpacity
-    style={styles.buttom}
-    onPress={props.onPress}
-  >
-    <Text>{props.text}</Text>
-  </TouchableOpacity>
+class ButtomCustomer extends React.PureComponent {
+
+
+  handlerButtom = () => {
+    console.log(this.props)
+    if(this.props.loading) {
+      return <ActivityIndicator size="small" color={'#007f3f'}/>
+    } else {
+      return <Text>{this.props.text}</Text>
+    }
+  }
+
+
+  render() {
+    return (
+      <TouchableOpacity
+        style={styles.buttom}
+        onPress={() => {
+          this.props.onPress()
+          this.setState({loading: false})
+        }}
+      >
+        {this.handlerButtom()}
+      </TouchableOpacity>
+    )
+  }
+}
+
+mapStateToProps = (state) => (
+  
+  {loading: state.appReducer.loading}
 )
 
-export default ButtomCustomer
+export default connect(mapStateToProps,null)(ButtomCustomer)
 
 const styles = StyleSheet.create({
   buttom: {
@@ -21,11 +46,11 @@ const styles = StyleSheet.create({
     margin: 15,
     padding: 15,
     elevation: 3,
-    borderBottomColor: '#007f3f',
+    borderBottomColor: '#d3d3d3',
     borderBottomWidth: 4,
     borderLeftWidth: 2,
     borderRightWidth: 2,
-    borderLeftColor: '#007f3f',
-    borderRightColor: '#007f3f'
+    borderLeftColor: '#d3d3d3',
+    borderRightColor: '#d3d3d3'
     }
 })

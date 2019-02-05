@@ -38,7 +38,7 @@ class Welcome extends Component {
         this.animatedValue,
         {
           toValue: 1,
-          duration: 4000,
+          duration: 2000,
           easing : Easing.elastic(2)
      }
     ).start( () =>  {
@@ -53,9 +53,10 @@ class Welcome extends Component {
   loading = () => {
     if(this.state.loading) {
       return (
+        <View style={{flex: 1, alignItems:'center', justifyContent: 'center'}}>
           <Modal 
             isVisible={this.props.modalVisible}
-            backdropColor={'#ab4949'}
+            backdropColor={'#f1be13'}
             deviceWidth={deviceWidth}
             deviceHeight={deviceHeight}
             backdropOpacity={1}
@@ -67,8 +68,9 @@ class Welcome extends Component {
             size = 'large'
             color = '#fff'
           />
-          <Text style={{fontSize: 20, color: '#fff'}}>Buscando sua localização</Text>
+          <Text style={{fontSize: 20, color: '#fff', textAlign: 'center'}}>Buscando sua localização</Text>
           </Modal>
+        </View>
       )
     }
   }
@@ -81,7 +83,7 @@ class Welcome extends Component {
     })
     return (
       <View style={[styles.container, {opacity: this.state.opacity}]}>
-      <StatusBar backgroundColor='#ab4949'/>
+      <StatusBar backgroundColor='#f1be13'/>
       <Animated.View style={[styles.animted, {marginLeft} ]} >
             <Text style={styles.text}>MarmitaUai</Text>
         </Animated.View>
@@ -109,7 +111,7 @@ export default connect(mapStateToProps,{getGetLocation})(Welcome)
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#e00',
+    backgroundColor: '#f1be13',
     alignItems: 'center',
     justifyContent: 'center'
   },

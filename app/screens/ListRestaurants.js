@@ -9,14 +9,17 @@ import { View,
     Dimensions,
     Easing } from 'react-native'
 import Item from '../components/ItemRestaurant'
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import tab from '../route/tabs'
+import SearchBar from '../components/searchBar';
 
 const {width, height} = Dimensions.get('window')
 class List extends Component { 
 
     static navigationOptions = {
-        title: 'Restaurantes próximos',
+        header:null
+    }
+/*         title: 'Restaurantes próximos',
         headerTitleStyle: {
             width: "90%",
             textAlign: 'center'
@@ -34,20 +37,20 @@ class List extends Component {
                     style={{width: 20, height: 20}}
                     source={require('../assets/images/login.png')}
                 />
-                <Text style={{color:'#fff'}} >login</Text>
+                <Text style={{color:'#fff'}} >logar</Text>
             </TouchableOpacity>
         )
-    }
+    } */
 
     state = {
-        lista: new Animated.ValueXY(0,0)
+        list: new Animated.ValueXY(0,0)
     }
 
 
 
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-        Animated.timing(this.state.lista, {
+        Animated.spring(this.state.list, {
             toValue: {
                 x:-500,
                 y:0
@@ -65,44 +68,51 @@ class List extends Component {
 
     render() {
         return(
-            <Animated.View
-                style={[this.state.lista.getLayout(), styles.container]}
-            >
-            <ScrollView style={{flex: 1}}>
-                <Item
-                    restaurantName = {'Restaurante X'}
-                    distance = {1}
-                />
-                <Item
-                    restaurantName = {'Restaurante X'}
-                    distance = {1}
-                />
-                <Item
-                    restaurantName = {'Restaurante X'}
-                    distance = {1}
-                />
-                <Item
-                    restaurantName = {'Restaurante X'}
-                    distance = {1}
-                />
-                <Item
-                    restaurantName = {'Restaurante X'}
-                    distance = {1}
-                />
-                <Item
-                    restaurantName = {'Restaurante X'}
-                    distance = {1}
-                />
-                <Item
-                    restaurantName = {'Restaurante X'}
-                    distance = {1}
-                />
-                <Item
-                    restaurantName = {'Restaurante X'}
-                    distance = {1}
-                />
-            </ScrollView>
-            </Animated.View>
+            <View style={{flex: 1}}>
+                <View>
+                    <SearchBar/>
+                </View>
+                <Animated.View
+                    style={[this.state.list.getLayout(), styles.container]}
+                >
+                <ScrollView showsVerticalScrollIndicator={true} style={{flex: 1}}
+
+                >
+                    <Item
+                        restaurantName = {'Restaurante X'}
+                        distance = {1}
+                    />
+                    <Item
+                        restaurantName = {'Restaurante X'}
+                        distance = {1}
+                    />
+                    <Item
+                        restaurantName = {'Restaurante X'}
+                        distance = {1}
+                    />
+                    <Item
+                        restaurantName = {'Restaurante X'}
+                        distance = {1}
+                    />
+                    <Item
+                        restaurantName = {'Restaurante X'}
+                        distance = {1}
+                    />
+                    <Item
+                        restaurantName = {'Restaurante X'}
+                        distance = {1}
+                    />
+                    <Item
+                        restaurantName = {'Restaurante X'}
+                        distance = {1}
+                    />
+                    <Item
+                        restaurantName = {'Restaurante X'}
+                        distance = {1}
+                    />
+                </ScrollView>
+                </Animated.View>
+            </View>
         )
     }
 }
@@ -114,7 +124,10 @@ const styles = StyleSheet.create({
         width: width,
         height: height,
         marginLeft: 500
-    }
+    },
+    contentContainer: {
+        paddingVertical: 20
+      }
 })
 
 export default List
