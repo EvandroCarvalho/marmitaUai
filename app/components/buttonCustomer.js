@@ -2,7 +2,7 @@ import React from 'react'
 import { TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
 
-class ButtomCustomer extends React.PureComponent {
+class ButtomCustomer extends React.Component {
 
 
   handlerButtom = () => {
@@ -10,15 +10,17 @@ class ButtomCustomer extends React.PureComponent {
     if(this.props.loading) {
       return <ActivityIndicator size="small" color={'#007f3f'}/>
     } else {
-      return <Text>{this.props.text}</Text>
+      return <Text style={{opacity: this.props.disabled ? 1 : 0.5, fontWeight: 'bold'}}>{this.props.text}</Text>
     }
   }
 
 
   render() {
+    console.log(this.props)
     return (
       <TouchableOpacity
-        style={styles.buttom}
+        style={[styles.buttom, {opacity: this.props.disabled ? 1 : 0.5}]}
+        disabled = { !this.props.disabled }
         onPress={() => {
           this.props.onPress()
           this.setState({loading: false})
@@ -51,6 +53,7 @@ const styles = StyleSheet.create({
     borderLeftWidth: 2,
     borderRightWidth: 2,
     borderLeftColor: '#d3d3d3',
-    borderRightColor: '#d3d3d3'
+    borderRightColor: '#d3d3d3',
+    opacity: 1
     }
 })

@@ -10,5 +10,17 @@ export default inputTextComponent = (props) => (
      onChangeText={props.onChangeText} 
      value={props.value}
      keyboardType={props.keyboardType || 'default'}
+     onEndEditing={props.onEndEditing}
+     maxLength={props.maxLength}
+     multiline={props.multiline}
+     onSubmitEditing={props.onSubmitEditing}
+     keyboardType={props.keyboardType}
+     style={{fontSize: props.fontSize,
+        color: props.fontColor,
+        borderBottomWidth: 0.5,
+        borderBottomColor: '#d3d3d3',
+        marginBottom: 10,
+        fontFamily: 'Roboto'
+    }}
     />
 )

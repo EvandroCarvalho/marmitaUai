@@ -27,10 +27,11 @@ getGetlocationError = (dispach,navigation) => {
     dispach({
         type:'getLocationError'
     })
-    navigation.navigate('RegisterUserLocationScreen')
+    navigation.navigate('postCode')
 }
 
- export const getLocationAPI = (address, navigation) => {
+ export const getLocationAPI = (address, {navigation}) => {
+     console.log(navigation)
     return dispatch => {
         dispatch({
             type: 'loading'

@@ -1,9 +1,10 @@
 import React from 'react'
 import { createStackNavigator ,createAppContainer } from 'react-navigation'
 import { FluidNavigator } from 'react-navigation-fluid-transitions'
-import WelcomeScreen from '../screens/Welcome'
-import ListRestaurants from '../screens/ListRestaurants'
-import RegisterUserLocationScreen from '../screens/RegisterUserLocation'
+import WelcomeScreen from '../screens/welcome'
+import ListRestaurantsScreen from '../screens/listRestaurants'
+import RegisterUserLocationScreen from '../screens/registerUserLocation'
+import postCodeScreen from '../screens/postCode'
 
 
 const stack = createStackNavigator({
@@ -11,12 +12,12 @@ const stack = createStackNavigator({
         screen: WelcomeScreen 
     },
     ListRestaurants: {
-        screen: ListRestaurants
+        screen: ListRestaurantsScreen
     },
-    RegisterUserLocationScreen: {
+    RegisterUserLocation: {
         screen: RegisterUserLocationScreen,
         navigationOptions: {
-            title:'Endereço para entrega',
+            title:'Sua localização',
             headerLeft: null,
             headerTitleStyle: {
                 width: "90%",
@@ -27,9 +28,25 @@ const stack = createStackNavigator({
             },
             headerTintColor: '#fff'
         }
-    }
+    },
+    postCode: {
+        screen: postCodeScreen,
+        navigationOptions: {
+            title:'Sua localização',
+            headerLeft: null,
+            headerTitleStyle: {
+                width: "90%",
+                textAlign: 'center'
+            },
+            headerStyle: {
+                backgroundColor:"#f1be13"
+            },
+            headerTintColor: '#fff'
+        }
+    },
+
 }, {
-  //initialRouteName : 'ListRestaurants'
+ // initialRouteName : 'postCode'
 })
 
 
