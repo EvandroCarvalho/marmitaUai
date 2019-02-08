@@ -4,11 +4,9 @@ import InputTextComponent from '../components/inputTextComponent'
 import ButtomCustomer from '../components/buttonCustomer'
 import { connect } from 'react-redux'
 
-import { getLocationAPI } from '../action/appActions'
+import { getLocationByAddress } from '../action/appActions'
 
 const { width, height } = Dimensions.get('window')
-const address = {}
-
 
 class RegisterUserLocation extends PureComponent {
 
@@ -85,7 +83,7 @@ class RegisterUserLocation extends PureComponent {
             }           />
           <ButtomCustomer
             text='Listar Restaurantes'
-            onPress={()=> this.props.getLocationAPI(this.state.address, this.props)}
+            onPress={()=> this.props.getLocationByAddress(this.state.address, this.props)}
             disabled={ !!(this.state.address.street && this.state.address.number && this.state.address.city) }
             />
             </ScrollView>
@@ -109,4 +107,4 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
 })
 
-export default connect(mapStateToProps, {getLocationAPI})(RegisterUserLocation)
+export default connect(mapStateToProps, { getLocationByAddress })(RegisterUserLocation)

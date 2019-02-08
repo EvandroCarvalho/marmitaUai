@@ -46,7 +46,7 @@ const stack = createStackNavigator({
     },
 
 }, {
- // initialRouteName : 'postCode'
+  initialRouteName : 'ListRestaurants'
 })
 
 

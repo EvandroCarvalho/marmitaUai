@@ -6,7 +6,6 @@ class ButtomCustomer extends React.Component {
 
 
   handlerButtom = () => {
-    console.log(this.props)
     if(this.props.loading) {
       return <ActivityIndicator size="small" color={'#007f3f'}/>
     } else {
@@ -16,7 +15,6 @@ class ButtomCustomer extends React.Component {
 
 
   render() {
-    console.log(this.props)
     return (
       <TouchableOpacity
         style={[styles.buttom, {opacity: this.props.disabled ? 1 : 0.5}]}

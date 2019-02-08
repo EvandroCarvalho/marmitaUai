@@ -6,16 +6,13 @@ import { Animated,
   Text,
   Dimensions,
   StatusBar,
-  ActivityIndicator } from 'react-native';
+      } from 'react-native';
 import Modal from 'react-native-modal'
 import { connect } from 'react-redux'
 import { getGetLocation } from '../action/appActions'
+import ModalComponent from '../components/modalComponent'
 
-const {width} = Dimensions.get('screen')
-const deviceWidth = Dimensions.get("window").width;
-const deviceHeight = Dimensions.get('window').height;
-
-
+const {width, height} = Dimensions.get('screen')
 class Welcome extends Component {
   constructor(props) {
     super(props)
@@ -23,7 +20,6 @@ class Welcome extends Component {
     this.state = {
       region: null,
       error: '',
-      loading: false,
       opacity: 1
     }
   }
@@ -41,36 +37,22 @@ class Welcome extends Component {
           duration: 2000,
           easing : Easing.elastic(2)
      }
-    ).start( () =>  {
-      this.setState({
-        loading: true,
-        opacity: 0
-      })
+    ).start( () =>  
       this.props.getGetLocation(this.props) 
-    })
+    )
   }
 
-  loading = () => {
-    if(this.state.loading) {
+  loading = (loading) => {
+    if(loading) {
       return (
-        <View style={{flex: 1, alignItems:'center', justifyContent: 'center'}}>
-          <Modal 
-            isVisible={this.props.modalVisible}
-            backdropColor={'#f1be13'}
-            deviceWidth={deviceWidth}
-            deviceHeight={deviceHeight}
-            backdropOpacity={1}
-            animationIn="zoomInDown"
-            animationOut="zoomOutUp"
-          >
-          <ActivityIndicator
-            animating = {this.state.loading}
-            size = 'large'
-            color = '#fff'
-          />
-          <Text style={{fontSize: 20, color: '#fff', textAlign: 'center'}}>Buscando sua localização</Text>
-          </Modal>
-        </View>
+        <View>
+        <ModalComponent
+        visible={loading}
+        loadIndicator={loading}
+        color={'#f1be13'}
+        />
+        <Text style={{color: '#e54',fontSize: 20,}}>Buscando sua localização</Text>
+      </View>
       )
     }
   }
@@ -82,13 +64,13 @@ class Welcome extends Component {
       outputRange: [0, width/3]
     })
     return (
-      <View style={[styles.container, {opacity: this.state.opacity}]}>
-      <StatusBar backgroundColor='#f1be13'/>
-      <Animated.View style={[styles.animted, {marginLeft} ]} >
-            <Text style={styles.text}>MarmitaUai</Text>
+      <View style={[styles.container, {opacity: this.props.loading ? 0.5 : 1 }]}>
+        <StatusBar backgroundColor='#f1be13'/>
+        <Animated.View style={[styles.animted, {marginLeft} ]} >
+          <Text style={styles.text}>MarmitaUai</Text>
         </Animated.View>
-        <View>
-          {this.loading()}
+        <View style={{position: 'absolute'}}>
+          {this.loading(this.props.loading)}
         </View>
       </View>
     );
@@ -96,7 +78,6 @@ class Welcome extends Component {
 }
 
 mapStateToProps = (state) => {
-  console.log('state: ',state)
   return(
     {
       modalVisible: state.appReducer.modalVisible,
@@ -113,11 +94,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f1be13',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center' 
   },
   animted: {
     alignItems: 'center',
-    justifyContent: 'center'
+    height: height / 3 
   },
   text: {
     color: 'white',
