@@ -1,16 +1,38 @@
-import { loading, getLocation, getLocationError } from './types'
+import { NetInfo } from 'react-native'
+import { 
+    loading,
+    loadingModal,
+    connectionStatus,
+    locationByAndroidSucess,
+    locationByAndroidError,
+    locationByCEPSucess,
+    locationByCEPError,
+    locationByAddressSucess,
+    locationByAddressError
+         } from './types'
 
-export const getGetLocation = ({navigation}) => {
+export const verifyConnection = () => {
+    return dispatch => {
+    NetInfo.getConnectionInfo().then(connectionInfo => {
+        dispatch({
+            type: connectionStatus,
+            payload: connectionInfo.type
+        })
+    })
+    }
+}
+
+export const getLocationByAndroidAPI = ({navigation}) => {
     return dispatch => {
         dispatch({
-            type: 'loading'
+            type: loadingModal
         })
         navigator.geolocation.getCurrentPosition(
             ({coords}) => {
-                console.log(coords)
-                getGetlocationSucess(dispatch, coords, navigation)
+                let { latitude, longitude } = coords
+                getLocationByAndroidAPISucesss(dispatch, {latitude, longitude}, navigation)
             },
-            (error) => { console.log(error), getGetlocationError(dispatch, navigation)},
+            (error) => { getLocationByAndroidAPIError(dispatch, navigation) },
             {
                 enableHighAccuracy: false,
                 timeout: 5000,
@@ -20,61 +42,114 @@ export const getGetLocation = ({navigation}) => {
     }
 }
 
-getGetlocationSucess = (dispatch, coords, navigation) => {
+getLocationByAndroidAPISucesss = (dispatch, coords, navigation) => {
     dispatch({
-        type: getLocation,
+        type: locationByAndroidSucess,
         payload: coords
     })
     navigation.navigate('ListRestaurants')
 }
 
-getGetlocationError = (dispach,navigation) => {
+getLocationByAndroidAPIError = (dispach,navigation) => {
     dispach({
-        type:getLocationError
+        type:locationByAndroidError
     })
     navigation.navigate('postCode')
 }
 
  export const getLocationByAddress = (address, {navigation}) => {
-     console.log(navigation)
     return dispatch => {
         dispatch({
             type: loading
         })
-        let url = `https://maps.googleapis.com/maps/api/geocode/json?address=${address.number}+${address.street}+${address.city}&key=AIzaSyBBnjp4mPMBFKOr65qoagqyO4w7ByInSl8`
+        
+        let url = `https://maps.googleapis.com/maps/api/geocode/json?address=${address.street}+${address.city}&key=AIzaSyBBnjp4mPMBFKOr65qoagqyO4w7ByInSl8`
         const result = fetch(url)
         result.then(body => body.json())
         .then(json => {
-            console.log(json.results[0].address_components)
-            const response = json.results[0]
-            //onsucess(response, dispatch, address)
-            navigation.navigate('ListRestaurants')
+            if(json.results.length === 0 ) {
+                throw 'Endereço invalido'
+            }
+            let response = createAddressObject(json.results[0])
+            response = { ...response, number: address.number, complement: address.complement }
+           getLocationByAddressSucess(dispatch, response, navigation)
         })
-        .catch( error => console.log(error))
+        .catch( error => getLocationByAddressError(dispatch))
     }
+}
+
+getLocationByAddressSucess = (dispatch, response, navigation) => {
+    dispatch({
+        type: locationByAddressSucess,
+        payload: response
+    })
+    navigation.navigate('ListRestaurants')
+}
+
+getLocationByAddressError = (dispatch) => {
+    dispatch({
+        type: locationByAddressError
+    })
 }
 
 export const getLocationByCEP = (postCode, {navigation}) => {
+    let responseViaCep = ''
     return dispatch => {
         dispatch({
-            type: loading
+            type: loadingModal
         })
-        let url = `https://maps.googleapis.com/maps/api/geocode/json?address=${postCode}&key=AIzaSyBBnjp4mPMBFKOr65qoagqyO4w7ByInSl8`
+
+        let url = `https://viacep.com.br/ws/${postCode}/json/`
         const result = fetch(url)
-        result.then(body => body.json())
-            .then(json => {
-                getLocationByCEPSucess(dispatch ,json.results[0].address_components, navigation)
-                console.log(json.results[0].address_components)
+        result.then(data => {
+            let ResponseStatus = JSON.parse(data._bodyText)
+            if(!ResponseStatus.erro) {
+                responseViaCep = JSON.parse(data._bodyText)
+                let urlGoogle = `https://maps.googleapis.com/maps/api/geocode/json?address=${responseViaCep.logradouro}+${responseViaCep.localidade}&key=AIzaSyBBnjp4mPMBFKOr65qoagqyO4w7ByInSl8`
+                let result = fetch(urlGoogle)
+                result.then(data => data.json())
+                    .then(json => {
+                        let response = createAddressObject(json.results[0])
+                        response = {...response, street: responseViaCep.logradouro, postCode}
+                        getLocationByCEPSucess(dispatch, response, navigation)
+                    })
+            } else {
+                throw 'cep incorreto'
+            }
             })
-            .catch(error => console.log(error))
+        .catch(error => getLocationByCEPError(dispatch))
     }
 }
 
+
+createAddressObject = (response) => {
+    let address = {}
+    let { location } = response.geometry
+    let { address_components } = response
+    address = { 
+        latitude: location.lat,
+        longitude: location.lng,
+        street: address_components[0].long_name,
+        neighborhood: address_components[1].long_name,
+        city: address_components[2].long_name,
+        state: address_components[3].long_name,
+        country: address_components[4].long_name,
+        postCode: address_components[5].long_name
+     }
+     return address
+
+}
+
 getLocationByCEPSucess = (dispatch, result, navigation) => {
-    console.log(result)
     dispatch({
-        type: getLocationByCEPSucess,
+        type: locationByCEPSucess,
         payload: result
     })
     navigation.navigate('ListRestaurants')
+}
+
+getLocationByCEPError = (dispatch) => {
+    dispatch({
+        type: locationByCEPError
+    })
 }

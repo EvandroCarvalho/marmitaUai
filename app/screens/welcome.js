@@ -7,9 +7,8 @@ import { Animated,
   Dimensions,
   StatusBar,
       } from 'react-native';
-import Modal from 'react-native-modal'
 import { connect } from 'react-redux'
-import { getGetLocation } from '../action/appActions'
+import { getLocationByAndroidAPI } from '../action/appActions'
 import ModalComponent from '../components/modalComponent'
 
 const {width, height} = Dimensions.get('screen')
@@ -38,16 +37,16 @@ class Welcome extends Component {
           easing : Easing.elastic(2)
      }
     ).start( () =>  
-      this.props.getGetLocation(this.props) 
+      this.props.getLocationByAndroidAPI(this.props) 
     )
   }
 
-  loading = (loading) => {
-    if(loading) {
+  loading = ({loadingModal, loading}) => {
+    if(loadingModal) {
       return (
         <View>
         <ModalComponent
-        visible={loading}
+        visible={loadingModal}
         loadIndicator={loading}
         color={'#f1be13'}
         />
@@ -70,7 +69,7 @@ class Welcome extends Component {
           <Text style={styles.text}>MarmitaUai</Text>
         </Animated.View>
         <View style={{position: 'absolute'}}>
-          {this.loading(this.props.loading)}
+          {this.loading(this.props)}
         </View>
       </View>
     );
@@ -80,14 +79,14 @@ class Welcome extends Component {
 mapStateToProps = (state) => {
   return(
     {
-      modalVisible: state.appReducer.modalVisible,
-      loading: state.appReducer.loading
+      loading: state.appReducer.loading,
+      loadingModal: state.appReducer.loadingModal
     }
   )
 
 }
 
-export default connect(mapStateToProps,{getGetLocation})(Welcome)
+export default connect(mapStateToProps,{ getLocationByAndroidAPI })(Welcome)
 
 const styles = StyleSheet.create({
   container: {
