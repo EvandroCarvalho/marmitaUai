@@ -83,7 +83,6 @@ mapStateToProps = (state) => {
       loadingModal: state.appReducer.loadingModal
     }
   )
-
 }
 
 export default connect(mapStateToProps,{ getLocationByAndroidAPI })(Welcome)

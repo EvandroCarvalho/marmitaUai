@@ -80,10 +80,11 @@ class RegisterUserLocation extends PureComponent {
                 }
               }
               )
-            }           />
+            }           
+          />
           <ButtomCustomer
             text='Listar Restaurantes'
-            onPress={()=> this.props.getLocationByAddress(this.state.address, this.props)}
+            onPress={()=> this.props.getLocationByAddress(this.state.address, this.props.navigation)}
             disabled={ !!(this.state.address.street && this.state.address.number && this.state.address.city) }
             />
             </ScrollView>

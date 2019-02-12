@@ -1,30 +1,46 @@
 import React, {PureComponent} from 'react'
-import { Dimensions, TouchableOpacity, View, Text, StyleSheet, ActivityIndicator, Modal } from 'react-native'
+import { Dimensions, TouchableOpacity, View, Text, StyleSheet, BackHandler, Alert } from 'react-native'
 import InputTextComponent from '../components/inputTextComponent'
 import { connect } from 'react-redux'
-import { getLocationByCEP } from '../action/appActions'
-import ModalComponent from '../components/modalComponent'
+import { getLocationByCEP, verifyConnection } from '../action/appActions'
+import { NavigationEvents } from 'react-navigation'
 
 const { width } = Dimensions.get('window')
 
 class GetPostCode extends PureComponent {
 
   state = {
-    postCode: ''
+    postCode: '',
+    buttomActive: false
   }
 
   componentWillMount = () => {
-    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+    this.props.verifyConnection()
+  }
+
+  handleBackPress = () => {
+    BackHandler.exitApp()
+    return false
   }
 
   render(){
     return(
-    <View style={{flex:1, width: width, backgroundColor: '#fff', marginTop: 20, padding: 20, opacity: this.props.loading ? 0.5 : 1 }}>
+      <View style={{flex:1, width: width, backgroundColor: '#fff', marginTop: 20, padding: 20, opacity: this.props.loading ? 0.5 : 1 }}>
+        <NavigationEvents
+          onWillFocus={ () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)}
+          onDidBlur={ () => BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)}
+        />
       <InputTextComponent
         placeholder={'CEP'}
-        value={this.state.postCode}
+        value={this.state.postCode.replace( /^([\d]{2})([\d]{3})-*([\d]{3})/, "$1$2-$3")}
         onChangeText={(text) => {
-          this.setState({postCode: text.replace( /^([\d]{2})\.*([\d]{3})-*([\d]{3})/, "$1$2-$3")})
+          this.setState({postCode: text})
+            console.log(this.state.postCode.length)
+          if (this.state.postCode.length + 1 >= 8) {
+            this.setState({ buttomActive: true })
+          } if (this.state.buttomActive) {
+            this.setState({buttomActive: false})
+          }
         }}
         maxLength={9}
         multiline={false}
@@ -32,7 +48,9 @@ class GetPostCode extends PureComponent {
         fontSize={18}
       />
       <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-        <TouchableOpacity style={styles.consultButtom}
+        <TouchableOpacity style={[styles.consultButtom, 
+        {opacity: this.state.buttomActive ? 1 : 0.5} ]}
+          disabled={!this.state.buttomActive}
           onPress={ () => this.props.getLocationByCEP(this.state.postCode, this.props) }
         >
           <Text style={{textAlign: 'center', color: '#fff'}}>Consultar</Text>
@@ -43,10 +61,6 @@ class GetPostCode extends PureComponent {
           <Text style={styles.addressButtom}>Não sei meu CEP!</Text>
         </TouchableOpacity>
       </View>
-      <ModalComponent
-        visible={this.props.loading}
-        loadIndicator={this.props.loading}
-      />
     </View>
     )
   }
@@ -54,10 +68,11 @@ class GetPostCode extends PureComponent {
 }
 
 const mapStateToProps = (state) => ({
-  loading: state.appReducer.loading
+  loading: state.appReducer.loading,
+  connectionInfo: state.appReducer.connectionInfo
 })
 
-export default connect(mapStateToProps, { getLocationByCEP })(GetPostCode)
+export default connect(mapStateToProps, { getLocationByCEP, verifyConnection })(GetPostCode)
 
 const styles = StyleSheet.create({
   consultButtom: {

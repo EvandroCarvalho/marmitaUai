@@ -23,7 +23,7 @@ class List extends Component {
 
 
     componentDidMount() {
-        BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+        console.log(this.props)
         Animated.spring(this.state.list, {
             toValue: {
                 x:-500,

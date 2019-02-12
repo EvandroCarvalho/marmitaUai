@@ -57,12 +57,11 @@ getLocationByAndroidAPIError = (dispach,navigation) => {
     navigation.navigate('postCode')
 }
 
- export const getLocationByAddress = (address, {navigation}) => {
+ export const getLocationByAddress = (address, navigation) => {
     return dispatch => {
         dispatch({
             type: loading
         })
-        
         let url = `https://maps.googleapis.com/maps/api/geocode/json?address=${address.street}+${address.city}&key=AIzaSyBBnjp4mPMBFKOr65qoagqyO4w7ByInSl8`
         const result = fetch(url)
         result.then(body => body.json())
@@ -79,6 +78,7 @@ getLocationByAndroidAPIError = (dispach,navigation) => {
 }
 
 getLocationByAddressSucess = (dispatch, response, navigation) => {
+    console.log(response)
     dispatch({
         type: locationByAddressSucess,
         payload: response

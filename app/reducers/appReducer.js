@@ -12,9 +12,9 @@ import {
 
 
 const INITIAL_STATE = {
-    region: '',
     modalVisible: true,
     loading: false,
+    connectionInfo: '',
     userLocale: {
         latitude: '',
         longitude: '',
@@ -29,11 +29,23 @@ const INITIAL_STATE = {
 }
 
 export default (state = INITIAL_STATE, action) => {
+    console.log(action.payload)
     switch(action.type) {
         case loading: 
             return { ...state, loading: true }
+        case connectionStatus:
+            return { ...state, connectionInfo: action.payload  }
         case locationByAndroidSucess:
-            return { ...state, region: action.payload, modalVisible: false, loading: false }
+            return { ...state,
+                userLocale: { ...state.userLocale,
+                    latitude: action.payload.latitude,
+                    longitude: action.payload.longitude
+                },
+                modalVisible: false,
+                loading: false
+            }
+        case locationByAndroidError:
+            return { ...state, modalVisible: false, loading: false }
         case locationByAddressError:
             return { ...state, modalVisible: false, loading: false }   
         case getLocationByCEPSucess: 
