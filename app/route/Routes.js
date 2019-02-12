@@ -1,10 +1,9 @@
 import React from 'react'
 import { createStackNavigator ,createAppContainer } from 'react-navigation'
-import { FluidNavigator } from 'react-navigation-fluid-transitions'
 import WelcomeScreen from '../screens/welcome'
 import ListRestaurantsScreen from '../screens/listRestaurants'
-import RegisterUserLocationScreen from '../screens/registerUserLocation'
-import postCodeScreen from '../screens/postCode'
+import RegisterUserLocationScreen from '../screens/getLocationByAdress'
+import postCodeScreen from '../screens/getLocationBypostCode'
 
 
 const stack = createStackNavigator({
@@ -46,7 +45,7 @@ const stack = createStackNavigator({
     },
 
 }, {
-  initialRouteName : 'postCode'
+ // initialRouteName : 'postCode'
 })
 
 

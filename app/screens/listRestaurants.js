@@ -8,9 +8,10 @@ import { View,
     ScrollView } from 'react-native'
 import Item from '../components/ItemRestaurant'
 import SearchBar from '../components/searchBar';
+import { connect } from 'react-redux'
 
 const {width, height} = Dimensions.get('window')
-class List extends Component { 
+class ListRestaurants extends Component { 
 
     static navigationOptions = {
         header:null
@@ -23,7 +24,10 @@ class List extends Component {
 
 
     componentDidMount() {
-        console.log(this.props)
+        BackHandler.addEventListener('hardwareBackPress', () => {
+            BackHandler.exitApp()
+            return false
+        })
         Animated.spring(this.state.list, {
             toValue: {
                 x:-500,
@@ -104,4 +108,10 @@ const styles = StyleSheet.create({
       }
 })
 
-export default List
+mapStateToProps = (state) => (
+    {
+        userLocation: state.appReducer.userLocale
+    }
+)
+
+export default  connect(mapStateToProps, null)(ListRestaurants)

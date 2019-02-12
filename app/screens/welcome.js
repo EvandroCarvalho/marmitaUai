@@ -41,12 +41,12 @@ class Welcome extends Component {
     )
   }
 
-  loading = ({loadingModal, loading}) => {
-    if(loadingModal) {
+  loading = ({modalVisible, loading}) => {
+    if(modalVisible) {
       return (
         <View>
         <ModalComponent
-        visible={loadingModal}
+        visible={modalVisible}
         loadIndicator={loading}
         color={'#f1be13'}
         />
@@ -80,7 +80,7 @@ mapStateToProps = (state) => {
   return(
     {
       loading: state.appReducer.loading,
-      loadingModal: state.appReducer.loadingModal
+      modalVisible: state.appReducer.modalVisible
     }
   )
 }

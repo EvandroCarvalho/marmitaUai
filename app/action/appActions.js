@@ -78,7 +78,6 @@ getLocationByAndroidAPIError = (dispach,navigation) => {
 }
 
 getLocationByAddressSucess = (dispatch, response, navigation) => {
-    console.log(response)
     dispatch({
         type: locationByAddressSucess,
         payload: response
@@ -98,7 +97,6 @@ export const getLocationByCEP = (postCode, {navigation}) => {
         dispatch({
             type: loadingModal
         })
-
         let url = `https://viacep.com.br/ws/${postCode}/json/`
         const result = fetch(url)
         result.then(data => {
@@ -111,6 +109,7 @@ export const getLocationByCEP = (postCode, {navigation}) => {
                     .then(json => {
                         let response = createAddressObject(json.results[0])
                         response = {...response, street: responseViaCep.logradouro, postCode}
+                        console.log(response)
                         getLocationByCEPSucess(dispatch, response, navigation)
                     })
             } else {
