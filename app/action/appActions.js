@@ -10,6 +10,9 @@ import {
     locationByAddressSucess,
     locationByAddressError
          } from './types'
+import { consultByAdress } from '../service/googleAPIService'
+import { consultViaCepService } from '../service/viaCepService'
+
 
 export const verifyConnection = () => {
     return dispatch => {
@@ -58,22 +61,22 @@ getLocationByAndroidAPIError = (dispach,navigation) => {
 }
 
  export const getLocationByAddress = (address, navigation) => {
-    return dispatch => {
+    return async dispatch => {
         dispatch({
             type: loading
         })
-        let url = `https://maps.googleapis.com/maps/api/geocode/json?address=${address.street}+${address.city}&key=AIzaSyBBnjp4mPMBFKOr65qoagqyO4w7ByInSl8`
-        const result = fetch(url)
-        result.then(body => body.json())
-        .then(json => {
-            if(json.results.length === 0 ) {
-                throw 'Endereço invalido'
+        try {
+        let { results } = await consultByAdress(address)
+            if (results.length === 0 ) {
+                getLocationByAddressError(dispatch)
             }
-            let response = createAddressObject(json.results[0])
+            let response = createAddressObject(results[0])
             response = { ...response, number: address.number, complement: address.complement }
-           getLocationByAddressSucess(dispatch, response, navigation)
-        })
-        .catch( error => getLocationByAddressError(dispatch))
+            getLocationByAddressSucess(dispatch, response, navigation)
+        }
+        catch(error) {
+            console.log(error)
+        }
     }
 }
 
@@ -93,29 +96,24 @@ getLocationByAddressError = (dispatch) => {
 
 export const getLocationByCEP = (postCode, {navigation}) => {
     let responseViaCep = ''
-    return dispatch => {
+    return async dispatch => {
         dispatch({
             type: loadingModal
         })
-        let url = `https://viacep.com.br/ws/${postCode}/json/`
-        const result = fetch(url)
-        result.then(data => {
-            let ResponseStatus = JSON.parse(data._bodyText)
-            if(!ResponseStatus.erro) {
-                responseViaCep = JSON.parse(data._bodyText)
-                let urlGoogle = `https://maps.googleapis.com/maps/api/geocode/json?address=${responseViaCep.logradouro}+${responseViaCep.localidade}&key=AIzaSyBBnjp4mPMBFKOr65qoagqyO4w7ByInSl8`
-                let result = fetch(urlGoogle)
-                result.then(data => data.json())
-                    .then(json => {
-                        let response = createAddressObject(json.results[0])
-                        response = {...response, street: responseViaCep.logradouro, postCode}
-                        getLocationByCEPSucess(dispatch, response, navigation)
-                    })
+        try {
+            responseViaCep = await consultViaCepService(postCode)
+            if(responseViaCep.erro) {
+                return getLocationByCEPError(dispatch)
             } else {
-                throw 'cep incorreto'
+                let { logradouro: street, localidade: city } = responseViaCep
+                let { results } = await consultByAdress({street, city})
+                let response = createAddressObject(results[0])
+            response = {...response, street: responseViaCep.logradouro, postCode}
+            getLocationByCEPSucess(dispatch, response, navigation)
             }
-            })
-        .catch(error => getLocationByCEPError(dispatch))
+        } catch(error) {
+            console.log(error)
+        }
     }
 }
 

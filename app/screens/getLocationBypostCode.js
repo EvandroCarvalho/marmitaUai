@@ -42,16 +42,16 @@ class GetLocationByPostCode extends PureComponent {
         />
       <InputTextComponent
         placeholder={'CEP'}
-        value={this.state.postCode.replace( /^([\d]{2})([\d]{3})-*([\d]{3})/, "$1$2-$3")}
+        value={this.state.postCode/* .replace( /^([\d]{2})([\d]{3})-*([\d]{3})/, "$1$2-$3") */}
         onChangeText={(text) => {
           this.setState({postCode: text})
-          if (this.state.postCode.length + 1 >= 8) {
+          if (this.state.postCode.length == 7) {
             this.setState({ buttomActive: true })
           } else if (this.state.buttomActive) {
             this.setState({buttomActive: false})
           }
         }}
-        maxLength={9}
+        maxLength={8}
         multiline={false}
         keyboardType={'numeric'}
         fontSize={18}
