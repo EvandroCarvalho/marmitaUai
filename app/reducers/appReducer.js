@@ -16,7 +16,7 @@ const INITIAL_STATE = {
     loading: false,
     connectionInfo: '',
     errorGetLocationAdress: false,
-    errorGetLocationAdress: false,
+    errorGetLocationCEP: false,
     userLocale: {
         latitude: '',
         longitude: '',

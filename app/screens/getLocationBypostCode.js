@@ -4,10 +4,11 @@ import InputTextComponent from '../components/inputTextComponent'
 import { connect } from 'react-redux'
 import { getLocationByCEP, verifyConnection } from '../action/appActions'
 import { NavigationEvents } from 'react-navigation'
+import { TextInputMask } from 'react-native-masked-text'
 
 const { width } = Dimensions.get('window')
 
-class GetLocationByPostCode extends PureComponent {
+class GetLocationByPostCode extends React.Component {
 
   state = {
     postCode: '',
@@ -17,6 +18,14 @@ class GetLocationByPostCode extends PureComponent {
   componentWillMount = () => {
     this.props.verifyConnection()
   }
+
+
+/* 
+ componentWillReceiveProps = (nextProps) => {
+  if(nextProps.errorGetLocationCEP != this.props.errorGetLocationCEP) {
+    this.setState({postCode: ''})
+  }
+ } */
 
   handleBackPress = () => {
     BackHandler.exitApp()
@@ -32,31 +41,32 @@ class GetLocationByPostCode extends PureComponent {
       ) 
     }
   }
+  onChangeInput = (value) => {
+    this.setState({postCode: value/* .replace( /^([\d]{2})([\d]{3})-*([\d]{3})/, "$1$2-$3") */})
+    if (value.length == 9) {
+      this.setState({ buttomActive: true })
+    } else if (this.state.buttomActive) {
+      this.setState({buttomActive: false})
+    }
+  }
+
 
   render(){
     return(
-      <View style={{flex:1, width: width, backgroundColor: '#fff', marginTop: 20, padding: 20, opacity: this.props.loading ? 0.5 : 1 }}>
+      <View style={[styles.container, {opacity: this.props.loading ? 0.5 : 1}]}>
         <NavigationEvents
-          onWillFocus={ () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)}
+          onWillFocus={ () => {BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)}}
           onDidBlur={ () => BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)}
         />
-      <InputTextComponent
-        placeholder={'CEP'}
-        value={this.state.postCode/* .replace( /^([\d]{2})([\d]{3})-*([\d]{3})/, "$1$2-$3") */}
-        onChangeText={(text) => {
-          this.setState({postCode: text})
-          if (this.state.postCode.length == 7) {
-            this.setState({ buttomActive: true })
-          } else if (this.state.buttomActive) {
-            this.setState({buttomActive: false})
-          }
-        }}
-        maxLength={8}
-        multiline={false}
-        keyboardType={'numeric'}
-        fontSize={18}
-      />
-      <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+        <TextInputMask
+          style={styles.inputStyle}
+          maxLength={9}
+          value={this.state.postCode}
+          onChangeText={this.onChangeInput}
+          type={'zip-code'}
+          placeholder="CEP"
+        />
+        <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
         <TouchableOpacity style={[styles.consultButtom, 
         {opacity: this.state.buttomActive ? 1 : 0.5} ]}
           disabled={!this.state.buttomActive}
@@ -87,6 +97,12 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, { getLocationByCEP, verifyConnection })(GetLocationByPostCode)
 
 const styles = StyleSheet.create({
+  container: {
+    flex:1,
+    backgroundColor: '#fff',
+    marginTop: 20,
+    padding: 20,
+  },
   consultButtom: {
     borderWidth: 1,
     borderColor: '#d3d3d3',
@@ -100,6 +116,13 @@ const styles = StyleSheet.create({
     width: 200,
     textAlign: 'center',
     fontSize: 15,
-    color:'#e54' 
+    color:'#e54',
+  },
+  inputStyle: {
+    fontSize: 16,
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#d3d3d3',
+    marginBottom: 10,
+    fontFamily: 'Roboto'
   }
 })

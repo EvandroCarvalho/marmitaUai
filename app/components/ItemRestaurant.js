@@ -1,32 +1,50 @@
-import React from 'react'
+import React, {PureComponent} from 'react'
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native'
+import SimmerPlaceHolder from 'react-native-shimmer-placeholder'
 
-const ItemResutaurant = (props) => (
-    <TouchableOpacity
-        style={styles.list}
-    >   
-        <View style={styles.imageName}>
-            <Image
-                style={{ width: 60, height: 60, borderRadius: 20, borderWidth: 1, marginRight: 15, backgroundColor: '#d3d3d3' }}
-                />
-                <Text style={{fontSize: 18, color: '#1d6346'}}>{props.restaurantName}</Text>   
-        </View>
-        <View style={styles.description}>
-            <View style={styles.descriptionItens}>
-                <Text style={styles.fontTitle}>Distância</Text>
-                <Text style={styles.fonts}>{props.distance} km</Text>   
-            </View>
-            <View style={styles.descriptionItens}>
-                <Text style={styles.fontTitle}>status</Text>
-                <Text style={styles.fonts}>Aberto</Text>   
-            </View>
-            <View style={styles.descriptionItens}>
-                <Text style={styles.fontTitle}>Avaliação</Text>
-                <Text style={styles.fonts}>5 Stars</Text>   
-            </View>
-        </View>
-    </TouchableOpacity>
-)
+class ItemResutaurant extends PureComponent {
+
+    state = {
+        imageVisible: false
+    }
+
+    render() {
+        return (
+            <TouchableOpacity
+                style={styles.list}
+            >   
+                <SimmerPlaceHolder
+                    style={{ width: 60, height: 60, borderRadius: 20, marginRight: 15 }}
+                    visible={this.state.imageVisible}
+                    backgroundColorBehindBorder={'#fff'}
+                >
+                <View style={styles.imageName}>
+                    <Image
+                        style={{ width: 60, height: 60, borderRadius: 20, marginRight: 15 }}
+                        source={{uri:this.props.urlImage}}
+                        onLoad={() => this.setState({imageVisible: true})}
+                        />
+                        <Text style={{fontSize: 18, color: '#1d6346'}}>{this.props.restaurantName}</Text>   
+                </View>
+                </SimmerPlaceHolder>
+                <View style={styles.description}>
+                    <View style={styles.descriptionItens}>
+                        <Text style={styles.fontTitle}>Distância</Text>
+                        <Text style={styles.fonts}>{this.props.distance} km</Text>   
+                    </View>
+                    <View style={styles.descriptionItens}>
+                        <Text style={styles.fontTitle}>status</Text>
+                        <Text style={styles.fonts}>{this.props.status}</Text>   
+                    </View>
+                    <View style={styles.descriptionItens}>
+                        <Text style={styles.fontTitle}>Avaliação</Text>
+                        <Text style={styles.fonts}>{this.props.avaliation} pontos</Text>   
+                    </View>
+                </View>
+            </TouchableOpacity>
+        )
+    }
+}
 
 const styles = StyleSheet.create({
     list: {

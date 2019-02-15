@@ -68,14 +68,14 @@ getLocationByAndroidAPIError = (dispach,navigation) => {
         try {
         let { results } = await consultByAdress(address)
             if (results.length === 0 ) {
-                getLocationByAddressError(dispatch)
+                return getLocationByAddressError(dispatch)
             }
             let response = createAddressObject(results[0])
             response = { ...response, number: address.number, complement: address.complement }
             getLocationByAddressSucess(dispatch, response, navigation)
         }
         catch(error) {
-            console.log(error)
+            getLocationByAddressError(dispatch)
         }
     }
 }
@@ -96,6 +96,7 @@ getLocationByAddressError = (dispatch) => {
 
 export const getLocationByCEP = (postCode, {navigation}) => {
     let responseViaCep = ''
+    console.log(postCode)
     return async dispatch => {
         dispatch({
             type: loadingModal
@@ -112,8 +113,7 @@ export const getLocationByCEP = (postCode, {navigation}) => {
             getLocationByCEPSucess(dispatch, response, navigation)
             }
         } catch(error) {
-            console.log(error)
-        }
+            getLocationByCEPError(dispatch)        }
     }
 }
 
@@ -130,7 +130,7 @@ createAddressObject = (response) => {
         city: address_components[2].long_name,
         state: address_components[3].long_name,
         country: address_components[4].long_name,
-        postCode: address_components[5].long_name
+        postCode: address_components[5] ? address_components[5].long_name : ''
      }
      return address
 

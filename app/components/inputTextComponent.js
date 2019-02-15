@@ -1,5 +1,5 @@
 import React from 'react'
-import { TextInput } from 'react-native'
+import { TextInput, StyleSheet } from 'react-native'
 
 
 export default inputTextComponent = (props) => (
@@ -11,16 +11,22 @@ export default inputTextComponent = (props) => (
      value={props.value}
      keyboardType={props.keyboardType || 'default'}
      onEndEditing={props.onEndEditing}
+     onBlur={props.onBlur}
      maxLength={props.maxLength}
      multiline={props.multiline}
      onSubmitEditing={props.onSubmitEditing}
      keyboardType={props.keyboardType}
-     style={{fontSize: props.fontSize,
-        color: props.fontColor,
+     style={[styles.inputStyle, [props.style]]}
+    />
+)
+
+const styles = StyleSheet.create({
+    inputStyle: {
+        fontSize: 15,
         borderBottomWidth: 0.5,
         borderBottomColor: '#d3d3d3',
         marginBottom: 10,
         fontFamily: 'Roboto'
-    }}
-    />
-)
+    }
+})
+

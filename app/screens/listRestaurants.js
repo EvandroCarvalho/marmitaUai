@@ -9,6 +9,8 @@ import { View,
 import Item from '../components/ItemRestaurant'
 import SearchBar from '../components/searchBar';
 import { connect } from 'react-redux'
+import { getRestaurantsList } from '../action/appServicesActions'
+import ModalComponent from '../components/modalComponent'
 
 const {width, height} = Dimensions.get('window')
 class ListRestaurants extends Component { 
@@ -23,7 +25,8 @@ class ListRestaurants extends Component {
 
 
 
-    componentDidMount() {
+    componentWillMount =() => {
+        this.props.getRestaurantsList(this.props.userLocale)
         BackHandler.addEventListener('hardwareBackPress', () => {
             BackHandler.exitApp()
             return false
@@ -44,7 +47,21 @@ class ListRestaurants extends Component {
         return true
     }
 
+    waitingList = ({modalVisible, loading}) => {
+        console.log(modalVisible,loading)
+        return (
+            <View>
+            <ModalComponent
+                visible={modalVisible}
+                loading={loading}
+            />
+        </View>
+        )
+    }
+
+
     render() {
+        console.log(this.props)
         return(
             <View style={{flex: 1}}>
                 <View>
@@ -53,42 +70,21 @@ class ListRestaurants extends Component {
                 <Animated.View
                     style={[this.state.list.getLayout(), styles.container]}
                 >
-                <ScrollView showsVerticalScrollIndicator={true}
+                    <ScrollView showsVerticalScrollIndicator={true}
 
-                >
-                    <Item
-                        restaurantName = {'Restaurante X'}
-                        distance = {1}
-                    />
-                    <Item
-                        restaurantName = {'Restaurante X'}
-                        distance = {1}
-                    />
-                    <Item
-                        restaurantName = {'Restaurante X'}
-                        distance = {1}
-                    />
-                    <Item
-                        restaurantName = {'Restaurante X'}
-                        distance = {1}
-                    />
-                    <Item
-                        restaurantName = {'Restaurante X'}
-                        distance = {1}
-                    />
-                    <Item
-                        restaurantName = {'Restaurante X'}
-                        distance = {1}
-                    />
-                    <Item
-                        restaurantName = {'Restaurante X'}
-                        distance = {1}
-                    />
-                    <Item
-                        restaurantName = {'Restaurante X'}
-                        distance = {1}
-                    />
-                </ScrollView>
+                    >
+                    {this.props.restaurantsList.map((item, index) => (
+                        <Item
+                            key={index}
+                            urlImage={item.urlImage}
+                            restaurantName={item.nome}
+                            distance={Math.floor(Math.random() * 10) + 1 }
+                            status={item.status}
+                            avaliation={item.avaliation}
+                        />
+                    ))}
+                    {this.waitingList(this.props)}
+                    </ScrollView>
                 </Animated.View>
             </View>
         )
@@ -110,8 +106,11 @@ const styles = StyleSheet.create({
 
 mapStateToProps = (state) => (
     {
-        userLocation: state.appReducer.userLocale
+        userLocation: state.appReducer.userLocale,
+        restaurantsList: state.restaurantsReducer.restaurantsList,
+        modalVisible: state.restaurantsReducer.modalVisible,
+        loading: state.restaurantsReducer.loading
     }
 )
 
-export default  connect(mapStateToProps, null)(ListRestaurants)
+export default  connect(mapStateToProps, {getRestaurantsList })(ListRestaurants)
