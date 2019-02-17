@@ -5,11 +5,12 @@ import { View,
     Animated,
     Dimensions,
     Easing,
-    ScrollView } from 'react-native'
+    ScrollView,
+    TextInput } from 'react-native'
 import Item from '../components/ItemRestaurant'
-import SearchBar from '../components/searchBar';
 import { connect } from 'react-redux'
-import { getRestaurantsList } from '../action/appServicesActions'
+import { getRestaurantsList } from '../actions/appServicesActions'
+import { setSelectedRestaurant } from '../actions/appServicesActions'
 import ModalComponent from '../components/modalComponent'
 
 const {width, height} = Dimensions.get('window')
@@ -20,7 +21,13 @@ class ListRestaurants extends Component {
     }
 
     state = {
-        list: new Animated.ValueXY(0,0)
+        list: new Animated.ValueXY(0,0),
+        textSearch: '',
+        restaurants: []
+    }
+
+    componentWillReceiveProps = (nextProps) => {
+        this.setState({restaurants: nextProps.restaurantsList})
     }
 
 
@@ -47,8 +54,7 @@ class ListRestaurants extends Component {
         return true
     }
 
-    waitingList = ({modalVisible, loading}) => {
-        console.log(modalVisible,loading)
+    waitingGetList = ({modalVisible, loading}) => {
         return (
             <View>
             <ModalComponent
@@ -60,20 +66,40 @@ class ListRestaurants extends Component {
     }
 
 
+    filterRestaurants = (text) => 
+        this.setState({
+            textSearch: text,
+            restaurants: this.props.restaurantsList.filter((item) => {
+                if (item.nome.toUpperCase().includes(text.toUpperCase())) {
+                    return item
+                }else if (!text) {
+                    return item
+                }
+        })
+    })
+
+    clearInputSeach = () => {
+        this.setState({textSearch: '', restaurants: this.props.restaurantsList})
+    }
+
     render() {
-        console.log(this.props)
         return(
             <View style={{flex: 1}}>
-                <View>
-                    <SearchBar/>
+                <View style={styles.searchStyle}>
+                    <TextInput
+                        value={this.state.textSearch}
+                        style={{width:'90%', fontSize: 18, fontFamily:'Roboto'}}
+                        onChangeText={this.filterRestaurants}
+                        placeholder={'Nome do restaurante'}
+                    />
                 </View>
                 <Animated.View
                     style={[this.state.list.getLayout(), styles.container]}
                 >
-                    <ScrollView showsVerticalScrollIndicator={true}
-
+                    <ScrollView 
+                        showsVerticalScrollIndicator={true}
                     >
-                    {this.props.restaurantsList.map((item, index) => (
+                    {this.state.restaurants.map((item, index) => (
                         <Item
                             key={index}
                             urlImage={item.urlImage}
@@ -81,9 +107,14 @@ class ListRestaurants extends Component {
                             distance={Math.floor(Math.random() * 10) + 1 }
                             status={item.status}
                             avaliation={item.avaliation}
+                            onPress={()=> {
+                                this.clearInputSeach()
+                                this.props.setSelectedRestaurant(item, this.props)
+                            
+                            }}
                         />
                     ))}
-                    {this.waitingList(this.props)}
+                    {this.waitingGetList(this.props)}
                     </ScrollView>
                 </Animated.View>
             </View>
@@ -101,7 +132,19 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         paddingVertical: 20
-      }
+      },
+      searchStyle: {
+        flexDirection: 'row',
+        borderColor: '#d3d3d3',
+        borderWidth: 0.5,
+        elevation: 2,
+        backgroundColor:'#fbfaf5',
+        borderRadius: 10,
+        paddingLeft: 10,
+        marginTop: 5,
+        marginRight: 10,
+        marginLeft: 10,
+    }
 })
 
 mapStateToProps = (state) => (
@@ -113,4 +156,4 @@ mapStateToProps = (state) => (
     }
 )
 
-export default  connect(mapStateToProps, {getRestaurantsList })(ListRestaurants)
+export default  connect(mapStateToProps, {getRestaurantsList, setSelectedRestaurant})(ListRestaurants)

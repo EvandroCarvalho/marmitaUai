@@ -8,7 +8,7 @@ import { Animated,
   StatusBar,
       } from 'react-native';
 import { connect } from 'react-redux'
-import { getLocationByAndroidAPI } from '../action/appActions'
+import { getLocationByAndroidAPI } from '../actions/appActions'
 import ModalComponent from '../components/modalComponent'
 
 const {width, height} = Dimensions.get('screen')

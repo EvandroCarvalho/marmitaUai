@@ -10,8 +10,8 @@ import {
     locationByAddressSucess,
     locationByAddressError
          } from './types'
-import { consultByAdress } from '../service/googleAPIService'
-import { consultViaCepService } from '../service/viaCepService'
+import { consultByAdress } from '../services/googleAPIService'
+import { consultViaCepService } from '../services/viaCepService'
 
 
 export const verifyConnection = () => {
@@ -96,7 +96,6 @@ getLocationByAddressError = (dispatch) => {
 
 export const getLocationByCEP = (postCode, {navigation}) => {
     let responseViaCep = ''
-    console.log(postCode)
     return async dispatch => {
         dispatch({
             type: loadingModal

@@ -4,11 +4,11 @@ import InputTextComponent from '../components/inputTextComponent'
 import ButtomCustomer from '../components/buttonCustomer'
 import { connect } from 'react-redux'
 
-import { getLocationByAddress } from '../action/appActions'
+import { getLocationByAddress } from '../actions/appActions'
 
 const { width, height } = Dimensions.get('window')
 
-class GetLocationByAdress extends PureComponent {
+class LocationByAdress extends PureComponent {
 
   state = {
     address: {
@@ -119,4 +119,4 @@ const mapStateToProps = (state) => ({
   errorGetLocationAdress: state.appReducer.errorGetLocationAdress
 })
 
-export default connect(mapStateToProps, { getLocationByAddress })(GetLocationByAdress)
+export default connect(mapStateToProps, { getLocationByAddress })(LocationByAdress)

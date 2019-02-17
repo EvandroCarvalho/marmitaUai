@@ -8,7 +8,7 @@ import {
     locationByCEPError,
     locationByAddressSucess,
     locationByAddressError
-         } from '../action/types'
+         } from '../actions/types'
 
 
 const INITIAL_STATE = {

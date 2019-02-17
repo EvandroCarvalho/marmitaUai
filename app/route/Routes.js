@@ -2,8 +2,10 @@ import React from 'react'
 import { createStackNavigator ,createAppContainer } from 'react-navigation'
 import WelcomeScreen from '../screens/welcome'
 import ListRestaurantsScreen from '../screens/listRestaurants'
-import RegisterUserLocationScreen from '../screens/getLocationByAdress'
-import postCodeScreen from '../screens/getLocationBypostCode'
+import RegisterUserLocationScreen from '../screens/locationByAdress'
+import postCodeScreen from '../screens/locationBypostCode'
+import LunchSizeScreen from '../screens/lunchSize'
+import FoodsItemsScreen from '../screens/foodsItems'
 
 
 const stack = createStackNavigator({
@@ -41,14 +43,41 @@ const stack = createStackNavigator({
                 backgroundColor:"#f1be13"
             },
             headerTintColor: '#fff'
+        },
+    },
+    lunchSize: {
+        screen: LunchSizeScreen,
+        navigationOptions: {
+            headerStyle: {
+                backgroundColor: "#fff"
+            },
+            headerTintColor: '#f1be13',
+            headerStyle: {
+                backgroundColor: '#fff',
+                elevation: 0
+            }
         }
     },
+    foodsItems: {
+        screen: FoodsItemsScreen,
+        navigationOptions: {
+            headerTitleStyle: {
+                width: "90%",
+                textAlign: 'center'
+            },
+            headerStyle: {
+                backgroundColor:"#f1be13"
+            },
+            headerTintColor: '#fff'
+        },
+
+    }
 
 }, {
-  initialRouteName : 'postCode'
+ // initialRouteName : 'lunchSize'
 })
 
 
-const routes = createAppContainer(stack)
+const routes = createAppContainer(stack)    
 
 export default routes

@@ -12,6 +12,7 @@ class ItemResutaurant extends PureComponent {
         return (
             <TouchableOpacity
                 style={styles.list}
+                onPress={this.props.onPress}
             >   
                 <SimmerPlaceHolder
                     style={{ width: 60, height: 60, borderRadius: 20, marginRight: 15 }}
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
     },
     description: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'space-between',        
     },
     descriptionItens: {
         flexDirection: 'column',
@@ -76,11 +77,11 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontFamily: 'Roboto',
         color:'#000',
-        fontWeight: 'bold'
     },
     fontTitle: {
         fontSize: 12,
-        fontFamily: 'Roboto'
+        fontFamily: 'Roboto',
+        fontWeight: 'bold'
     }
 })
 

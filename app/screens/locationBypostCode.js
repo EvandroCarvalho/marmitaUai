@@ -1,14 +1,13 @@
-import React, {PureComponent} from 'react'
+import React, { Component } from 'react'
 import { Dimensions, TouchableOpacity, View, Text, StyleSheet, BackHandler, Alert } from 'react-native'
-import InputTextComponent from '../components/inputTextComponent'
 import { connect } from 'react-redux'
-import { getLocationByCEP, verifyConnection } from '../action/appActions'
+import { getLocationByCEP, verifyConnection } from '../actions/appActions'
 import { NavigationEvents } from 'react-navigation'
 import { TextInputMask } from 'react-native-masked-text'
 
 const { width } = Dimensions.get('window')
 
-class GetLocationByPostCode extends React.Component {
+class LocationByPostCode extends Component {
 
   state = {
     postCode: '',
@@ -18,14 +17,6 @@ class GetLocationByPostCode extends React.Component {
   componentWillMount = () => {
     this.props.verifyConnection()
   }
-
-
-/* 
- componentWillReceiveProps = (nextProps) => {
-  if(nextProps.errorGetLocationCEP != this.props.errorGetLocationCEP) {
-    this.setState({postCode: ''})
-  }
- } */
 
   handleBackPress = () => {
     BackHandler.exitApp()
@@ -42,7 +33,7 @@ class GetLocationByPostCode extends React.Component {
     }
   }
   onChangeInput = (value) => {
-    this.setState({postCode: value/* .replace( /^([\d]{2})([\d]{3})-*([\d]{3})/, "$1$2-$3") */})
+    this.setState({postCode: value})
     if (value.length == 9) {
       this.setState({ buttomActive: true })
     } else if (this.state.buttomActive) {
@@ -85,7 +76,6 @@ class GetLocationByPostCode extends React.Component {
     </View>
     )
   }
-
 }
 
 const mapStateToProps = (state) => ({
@@ -94,7 +84,7 @@ const mapStateToProps = (state) => ({
   errorGetLocationCEP: state.appReducer.errorGetLocationCEP
 })
 
-export default connect(mapStateToProps, { getLocationByCEP, verifyConnection })(GetLocationByPostCode)
+export default connect(mapStateToProps, { getLocationByCEP, verifyConnection })(LocationByPostCode)
 
 const styles = StyleSheet.create({
   container: {
