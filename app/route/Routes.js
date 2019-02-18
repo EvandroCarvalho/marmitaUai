@@ -66,9 +66,9 @@ const stack = createStackNavigator({
                 textAlign: 'center'
             },
             headerStyle: {
-                backgroundColor:"#f1be13"
+                backgroundColor:"#fff"
             },
-            headerTintColor: '#fff'
+            headerTintColor: '#f1be13'
         },
 
     }

@@ -12,7 +12,7 @@ export default (props) => (
     >
         <Text style={styles.textSize} >{props.size}</Text>
         <Text style={styles.textAmount} >{props.amount} Itens</Text>
-        <Text style={styles.priceText} >{props.price}</Text>
+        <Text style={styles.priceText} >{`R$ ${Math.floor(props.price).toFixed(2)}`}</Text>
     </TouchableOpacity>
 )
 
@@ -22,28 +22,30 @@ const styles = StyleSheet.create({
         flexDirection:'column',
         alignItems: 'center',
         justifyContent: 'center',
-        borderWidth: 2,
+        borderBottomWidth: 3,
+        borderLeftWidth: 3,
+        borderRightWidth: 3,
         elevation: 3,
         borderColor: '#d3d3d3',
         width: width/3,
         height: height/6,
-        backgroundColor: '#f1be13',
+        backgroundColor: '#fff',
         borderRadius: 20,
         margin: 20
     },
     textSize: {
         fontSize: 17,   
         fontFamily: 'Roboto',
-        color: '#fff'
+       // color: '#fff'
     },
     textAmount: {
         fontFamily: 'Roboto',
         fontSize: 15,
-        color: '#fff'
+    //    color: '#fff'
     },
     priceText: {
         fontFamily: 'Roboto',
         fontSize: 15,
-        color: '#fff'
+    //    color: '#fff'
     }
 })

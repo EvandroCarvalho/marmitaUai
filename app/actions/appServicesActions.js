@@ -1,6 +1,6 @@
 import { loadingModalListRestaurants } from "./types";
 import { getListOfRestaurants } from '../services/appServices'
-import { restaurantsList, selectedRestaurant } from './types'
+import { restaurantsList, selectedRestaurant, selectedSize } from './types'
 
 
 export const getRestaurantsList = (userLocation) => {
@@ -17,12 +17,24 @@ export const getRestaurantsList = (userLocation) => {
 }
 
 export const setSelectedRestaurant = (restaurant, {navigation}) => {
-    console.log(restaurant)
     return dispatch => {
         dispatch({
             type: selectedRestaurant,
             payload: restaurant
         })
         navigation.navigate('lunchSize')
+    }
+}
+
+export const setSizeChosen = (lunchSize, {navigation, selectedRestaurant}) => {
+    return dispatch => {
+        dispatch({
+            type: selectedSize,
+            payload: lunchSize
+        })
+        navigation.navigate('foodsItems', {
+            title: selectedRestaurant.nome
+        })
+
     }
 }
