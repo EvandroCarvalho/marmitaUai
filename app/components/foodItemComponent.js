@@ -10,6 +10,7 @@ class FoodItemComponent extends React.PureComponent {
     render() {
         return (
             <TouchableOpacity style={[styles.buttomOptions, {backgroundColor: this.state.activeButtom ? "#f1be13" : '#fff'}]}
+                disabled={this.props.disabled}
                 onPress={ () => {
                     this.setState({
                         activeButtom: !this.state.activeButtom
@@ -17,7 +18,6 @@ class FoodItemComponent extends React.PureComponent {
                     this.props.onPress(this.state.activeButtom)
                 } }
             >
-                
                 <Text style={[styles.textStyle, {color: this.state.activeButtom ? '#fff': '#64666a'}]}>{this.props.item.nome}</Text>
             </TouchableOpacity>
         )

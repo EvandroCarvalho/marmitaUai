@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, Dimensions, Alert } from 'react-native'
+import { View, Text, StyleSheet, Dimensions, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import FoodItemComponent from '../components/foodItemComponent';
 import ConfirmItemsSelect from '../components/confirmItemsSelect'
-
+import  GridOfItems from '../components/gridOfItems'
+import { NavigationEvents } from 'react-navigation'
 
 class FoodsItems extends Component {
 
@@ -41,8 +42,8 @@ class FoodsItems extends Component {
             onPress={(active) => {
                 this.countNumberOfItems(active)
                 this.addItemSelectedInList(active, item)
-
             }}
+            disabled={this.state.countItems <= 1 ? true : false}
             />
         )
     }
@@ -62,13 +63,12 @@ class FoodsItems extends Component {
                 '',
                 "Gostaria de adicionar uma bebida?",
                 [
-                    {text: 'Sim', onPress: () => false},
-                    {text: 'Não', onPress: () => false}
+                    {text: 'Sim', onPress: () => this.props.navigation.navigate('drinksItems')},
+                    {text: 'Não', onPress: () => this.props.navigation.navigate('payMode')}
                 ],
                 {cancelable:false}
             )
-/*            this.setState({isVisible: true})
- */        }
+       }
     }
 
     addItemSelectedInList = (active, item) => {
@@ -83,27 +83,16 @@ class FoodsItems extends Component {
         }
     }
 
-    formatData = (data, numColumns) => {
-        const numberOfFullRows = Math.floor(data.length / numColumns)
-        let numberOfElementsLastRow = data.length - (numberOfFullRows * numColumns)
-        while(numberOfElementsLastRow !== numColumns && numberOfElementsLastRow !== 0) {
-            data.push({key: `blank ${numberOfElementsLastRow}`, empty: true })
-            numberOfElementsLastRow = numberOfElementsLastRow + 1
-        }
-        return data
-    }
-
     render() {
-        const numColumns = 3
         return (
             <View style={{flex: 1, marginLeft: 10, marginRight: 10, opacity: this.state.isVisible ? 0.1 : 1}}>
                 <Text style={styles.descriptionText}>{`Escolha ${this.state.countItems} ${this.state.countItems > 1 ? 'opções' : 'opção'}`}</Text>
                 <View style={{flex: 1, backgroundColor: "#fff"}}>
-                    <FlatList
-                        data={this.formatData(this.state.items, numColumns)}
+                    <GridOfItems
+                        items={this.state.items}
+                        numColumns={3}
                         renderItem={this.renderList}
                         keyExtractor={items => items.id}
-                        numColumns={numColumns}
                     />
                     <ConfirmItemsSelect
                         visible={this.state.isVisible}

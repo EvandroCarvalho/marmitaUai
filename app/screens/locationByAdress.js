@@ -13,6 +13,7 @@ class LocationByAdress extends PureComponent {
   state = {
     address: {
       city: '',
+      neighborhood: '',
       complement: '',
       street: '',
       number: ''
@@ -65,6 +66,17 @@ class LocationByAdress extends PureComponent {
               {
                 address: {
               ...this.state.address, number: text
+                }
+              }
+              )
+            }          
+          />
+          <InputTextComponent
+            placeholder={'Bairro'}
+            onChangeText={ (text) => this.setState(
+              {
+                address: {
+              ...this.state.address, neighborhood: text
                 }
               }
               )

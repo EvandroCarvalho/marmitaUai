@@ -124,13 +124,13 @@ createAddressObject = (response) => {
     address = { 
         latitude: location.lat,
         longitude: location.lng,
-        street: address_components[0].long_name,
+/*        street: address_components[0].long_name,
         neighborhood: address_components[1].long_name,
         city: address_components[2].long_name,
         state: address_components[3].long_name,
         country: address_components[4].long_name,
         postCode: address_components[5] ? address_components[5].long_name : ''
-     }
+ */     }
      return address
 
 }

@@ -6,6 +6,8 @@ import RegisterUserLocationScreen from '../screens/locationByAdress'
 import postCodeScreen from '../screens/locationBypostCode'
 import LunchSizeScreen from '../screens/lunchSize'
 import FoodsItemsScreen from '../screens/foodsItems'
+import DrinksItemsScrenn from '../screens/drinksItems'
+import PayModeScrenn from '../screens/payMode'
 
 
 const stack = createStackNavigator({
@@ -70,11 +72,17 @@ const stack = createStackNavigator({
             },
             headerTintColor: '#f1be13'
         },
-
+    },
+    drinksItems: {
+        screen: DrinksItemsScrenn
+    },
+    payMode: {
+        screen: PayModeScrenn
     }
 
+
 }, {
- // initialRouteName : 'lunchSize'
+  ///initialRouteName : 'postCode'
 })
 
 
