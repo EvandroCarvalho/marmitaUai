@@ -1,5 +1,6 @@
 import React from 'react'
 import {TouchableOpacity, Text, StyleSheet } from 'react-native'
+import defaultThemes from '../styles/defaultThemes';
 
 class FoodItemComponent extends React.PureComponent {
 
@@ -9,7 +10,7 @@ class FoodItemComponent extends React.PureComponent {
 
     render() {
         return (
-            <TouchableOpacity style={[styles.buttomOptions, {backgroundColor: this.state.activeButtom ? "#f1be13" : '#fff'}]}
+            <TouchableOpacity style={[styles.buttomOptions, {backgroundColor: this.state.activeButtom ? defaultThemes.colors.yellowTheme : defaultThemes.colors.withe}]}
                 disabled={this.props.disabled}
                 onPress={ () => {
                     this.setState({
@@ -18,7 +19,7 @@ class FoodItemComponent extends React.PureComponent {
                     this.props.onPress(this.state.activeButtom)
                 } }
             >
-                <Text style={[styles.textStyle, {color: this.state.activeButtom ? '#fff': '#64666a'}]}>{this.props.item.nome}</Text>
+                <Text style={[styles.textStyle, {color: this.state.activeButtom ? defaultThemes.colors.withe: '#64666a'}]}>{this.props.item.nome}</Text>
             </TouchableOpacity>
         )
     }

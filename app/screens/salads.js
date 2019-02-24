@@ -7,25 +7,27 @@ import  GridOfItems from '../components/gridOfItems'
 import { NavigationEvents } from 'react-navigation'
 import defaultThemes from '../styles/defaultThemes';
 
-class FoodsItems extends Component {
+class Salads extends Component {
 
-     static navigationOptions = ({navigation}) => {
-        console.log(navigation.events)
-
+/*     static navigationOptions = ({navigation}) => {
+        const { params } = navigation.state;
+        console.log(params.title)
+        return {
+        title: `${params.title}`
+        }
     }
- 
+ */
+static navigationOptions = {
+    header: null
+}
     state = {
         items: [
-            {id: '1', nome: 'arroz'},
-            {id: '2', nome: 'feijao'},
-            {id: '3', nome: 'macarrão'},
-            {id: '4', nome: 'carne'},
-            {id: '5', nome: 'milho'},
-            {id: '6', nome: 'batata doce'},
-            {id: '7', nome: 'ovos de codorna'},
-            {id: '8' ,nome: 'lasanha'},
+            {id: '1', nome: 'Tomate'},
+            {id: '2', nome: 'Alface'},
+            {id: '3', nome: 'Rucula'},
+            {id: '4', nome: 'Brocolis'},
         ],
-        countItems: this.props.sizeSelected.numberOfItems,
+        countItems: 2,
         itemSeletect: new Set(),
         isVisible: false
     }
@@ -48,7 +50,7 @@ class FoodsItems extends Component {
     }
 
     countNumberOfItems = (active) => {
-        if(this.state.countItems > 1){
+        if(this.state.countItems > 2){
             if(active){
                 this.setState({
                         countItems: this.state.countItems + 1
@@ -85,7 +87,7 @@ class FoodsItems extends Component {
     render() {
         return (
             <View style={{flex: 1, marginLeft: 10, marginRight: 10, opacity: this.state.isVisible ? 0.1 : 1}}>
-                <Text style={styles.descriptionText}>{`Escolha ${this.state.countItems} ${this.state.countItems > 1 ? 'opções' : 'opção'}`}</Text>
+                <Text style={styles.descriptionText}>{`Saladas`}</Text>
                 <View style={{flex: 1, backgroundColor: defaultThemes.colors.withe}}>
                     <GridOfItems
                         items={this.state.items}
@@ -143,4 +145,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default connect(mapStateToProps, null)(FoodsItems)
+export default connect(mapStateToProps, null)(Salads)

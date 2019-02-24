@@ -5,6 +5,7 @@ import ButtomCustomer from '../components/buttonCustomer'
 import { connect } from 'react-redux'
 
 import { getLocationByAddress } from '../actions/appActions'
+import defaultThemes from '../styles/defaultThemes';
 
 const { width, height } = Dimensions.get('window')
 
@@ -120,7 +121,7 @@ const styles = StyleSheet.create({
   container: {
     flex:1,
     width: width,
-    backgroundColor: '#fff',
+    backgroundColor: defaultThemes.colors.withe,
     marginTop: 20,
     padding: 20,
     marginLeft: -500

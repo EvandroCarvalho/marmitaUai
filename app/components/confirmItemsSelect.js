@@ -8,6 +8,7 @@ import { Modal,
     Image } from 'react-native'
 
 import ButtonCustomer from '../components/buttonCustomer'
+import defaultThemes from '../styles/defaultThemes';
 
 const { width, height  } = Dimensions.get('window')
 
@@ -24,7 +25,7 @@ class ConfirmItemsSalect extends React.PureComponent {
                 >
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width: width, height: height}}>
                     <View style={styles.container}>
-                        <View style={{flexDirection: 'row', backgroundColor: '#f1be13', alignItems: 'center', justifyContent: 'center', borderTopLeftRadius: 10, borderTopRightRadius: 10}}>
+                        <View style={{flexDirection: 'row', backgroundColor: defaultThemes.colors.yellowTheme, alignItems: 'center', justifyContent: 'center', borderTopLeftRadius: 10, borderTopRightRadius: 10}}>
                             <Text style={styles.textStyle}>
                                 Items Selecionados
                             </Text>
@@ -63,11 +64,11 @@ class ConfirmItemsSalect extends React.PureComponent {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor:'#fff',
+        backgroundColor:defaultThemes.colors.yellowTheme,
         borderRadius: 10,
         borderWidth: 1,
         elevation: 3,
-        borderColor: '#f1be13'
+        borderColor: defaultThemes.colors.yellowTheme
     },
     textStyle: {
         textAlign: 'center',
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
         marginTop: 5,
         padding: 10,
         fontWeight: 'bold',
-        color: '#fff'
+        color: defaultThemes.withe
     }
 })
 

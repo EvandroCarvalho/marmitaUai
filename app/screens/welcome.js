@@ -10,6 +10,7 @@ import { Animated,
 import { connect } from 'react-redux'
 import { getLocationByAndroidAPI } from '../actions/appActions'
 import ModalComponent from '../components/modalComponent'
+import defaultThemes from '../styles/defaultThemes';
 
 const {width, height} = Dimensions.get('screen')
 class Welcome extends Component {
@@ -48,7 +49,7 @@ class Welcome extends Component {
         <ModalComponent
         visible={modalVisible}
         loadIndicator={loading}
-        color={'#f1be13'}
+        color={defaultThemes.colors.yellowTheme}
         />
         <Text style={{color: '#e54',fontSize: 20,}}>Buscando sua localização</Text>
       </View>
@@ -64,7 +65,7 @@ class Welcome extends Component {
     })
     return (
       <View style={[styles.container, {opacity: this.props.loading ? 0.5 : 1 }]}>
-        <StatusBar backgroundColor='#f1be13'/>
+        <StatusBar backgroundColor={defaultThemes.colors.yellowTheme}/>
         <Animated.View style={[styles.animted, {marginLeft} ]} >
           <Text style={styles.text}>MarmitaUai</Text>
         </Animated.View>
@@ -90,7 +91,7 @@ export default connect(mapStateToProps,{ getLocationByAndroidAPI })(Welcome)
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f1be13',
+    backgroundColor: defaultThemes.colors.yellowTheme,
     alignItems: 'center',
     justifyContent: 'center' 
   },

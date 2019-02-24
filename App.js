@@ -5,12 +5,18 @@ import { createStore, applyMiddleware } from 'redux'
 import ReduxThunk from 'redux-thunk'
 import reducers from './app/reducers'
 
+
 console.ignoredYellowBox = true
 
 export default App = () => (
     <Provider
         store={createStore(reducers, {}, applyMiddleware(ReduxThunk))}
     >
-        <Router/>
+        <Router
+            onNavigationStateChange = { (prevState, nextState) => {
+                
+            }}
+        />
+
     </Provider>
 )

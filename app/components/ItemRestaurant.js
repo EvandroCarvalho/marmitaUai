@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react'
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native'
 import SimmerPlaceHolder from 'react-native-shimmer-placeholder'
+import defaultThemes from '../styles/defaultThemes';
 
 class ItemResutaurant extends PureComponent {
 
@@ -17,7 +18,7 @@ class ItemResutaurant extends PureComponent {
                 <SimmerPlaceHolder
                     style={{ width: 60, height: 60, borderRadius: 20, marginRight: 15 }}
                     visible={this.state.imageVisible}
-                    backgroundColorBehindBorder={'#fff'}
+                    backgroundColorBehindBorder={defaultThemes.colors.withe}
                 >
                 <View style={styles.imageName}>
                     <Image
@@ -54,12 +55,12 @@ const styles = StyleSheet.create({
         borderBottomWidth: 3,
         borderLeftWidth: 3,
         borderRightWidth: 3,
-        borderColor: '#fff',
+        borderColor: defaultThemes.colors.withe,
         margin: 10,
         padding: 10,
         borderRadius: 10,
         elevation: 3,
-        backgroundColor: '#fff',
+        backgroundColor: defaultThemes.colors.withe,
     },
     imageName: {
         flexDirection: 'row',

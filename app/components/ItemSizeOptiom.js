@@ -1,5 +1,6 @@
 import React from 'react'
 import { TouchableOpacity, Text, StyleSheet, Dimensions } from 'react-native'
+import defaultThemes from '../styles/defaultThemes';
 
 const {width, height} = Dimensions.get('screen')
 
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
         borderColor: '#d3d3d3',
         width: width/3,
         height: height/6,
-        backgroundColor: '#fff',
+        backgroundColor: defaultThemes.colors.withe,
         borderRadius: 20,
         margin: 20
     },

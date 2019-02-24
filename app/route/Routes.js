@@ -5,9 +5,9 @@ import ListRestaurantsScreen from '../screens/listRestaurants'
 import RegisterUserLocationScreen from '../screens/locationByAdress'
 import postCodeScreen from '../screens/locationBypostCode'
 import LunchSizeScreen from '../screens/lunchSize'
-import FoodsItemsScreen from '../screens/foodsItems'
-import DrinksItemsScrenn from '../screens/drinksItems'
-import PayModeScrenn from '../screens/payMode'
+
+import tabNavigationStack from './tabs'
+import defaultThemes from '../styles/defaultThemes';
 
 
 const stack = createStackNavigator({
@@ -27,9 +27,9 @@ const stack = createStackNavigator({
                 textAlign: 'center'
             },
             headerStyle: {
-                backgroundColor:"#f1be13"
+                backgroundColor:defaultThemes.colors.yellowTheme
             },
-            headerTintColor: '#fff'
+            headerTintColor: defaultThemes.colors.withe
         }
     },
     postCode: {
@@ -42,45 +42,41 @@ const stack = createStackNavigator({
                 textAlign: 'center'
             },
             headerStyle: {
-                backgroundColor:"#f1be13"
+                backgroundColor:defaultThemes.colors.yellowTheme
             },
-            headerTintColor: '#fff'
+            headerTintColor: defaultThemes.colors.withe
         },
     },
     lunchSize: {
         screen: LunchSizeScreen,
         navigationOptions: {
             headerStyle: {
-                backgroundColor: "#fff"
+                backgroundColor: defaultThemes.colors.withe
             },
-            headerTintColor: '#f1be13',
+            headerTintColor: defaultThemes.colors.yellowTheme,
             headerStyle: {
-                backgroundColor: '#fff',
+                backgroundColor: defaultThemes.colors.withe,
                 elevation: 0
             }
         }
     },
     foodsItems: {
-        screen: FoodsItemsScreen,
-        navigationOptions: {
+        screen: tabNavigationStack,
+        navigationOptions: ({navigation}) => {
+            return {
+            title: navigation.state.params.title,
             headerTitleStyle: {
                 width: "90%",
                 textAlign: 'center'
             },
             headerStyle: {
-                backgroundColor:"#fff"
+                backgroundColor:defaultThemes.colors.withe,
+                elevation: 0
             },
-            headerTintColor: '#f1be13'
+            headerTintColor: defaultThemes.colors.yellowTheme
+        }
         },
     },
-    drinksItems: {
-        screen: DrinksItemsScrenn
-    },
-    payMode: {
-        screen: PayModeScrenn
-    }
-
-
 }, {
   ///initialRouteName : 'postCode'
 })

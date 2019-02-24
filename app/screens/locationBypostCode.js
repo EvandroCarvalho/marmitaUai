@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { getLocationByCEP, verifyConnection } from '../actions/appActions'
 import { NavigationEvents } from 'react-navigation'
 import { TextInputMask } from 'react-native-masked-text'
+import defaultThemes from '../styles/defaultThemes';
 
 const { width } = Dimensions.get('window')
 
@@ -63,7 +64,7 @@ class LocationByPostCode extends Component {
           disabled={!this.state.buttomActive}
           onPress={ () => this.props.getLocationByCEP(this.state.postCode, this.props) }
         >
-          <Text style={{textAlign: 'center', color: '#fff'}}>Consultar</Text>
+          <Text style={{textAlign: 'center', color: defaultThemes.colors.withe}}>Consultar</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{marginTop: 10}}
@@ -89,7 +90,7 @@ export default connect(mapStateToProps, { getLocationByCEP, verifyConnection })(
 const styles = StyleSheet.create({
   container: {
     flex:1,
-    backgroundColor: '#fff',
+    backgroundColor: defaultThemes.colors.withe,
     marginTop: 20,
     padding: 20,
   },

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Dimensions, Alert } from 'react-native'
+import { View, Text, StyleSheet, Button } from 'react-native'
 import { connect } from 'react-redux'
 import FoodItemComponent from '../components/foodItemComponent';
 import ConfirmItemsSelect from '../components/confirmItemsSelect'
@@ -7,25 +7,27 @@ import  GridOfItems from '../components/gridOfItems'
 import { NavigationEvents } from 'react-navigation'
 import defaultThemes from '../styles/defaultThemes';
 
-class FoodsItems extends Component {
+class Meats extends Component {
 
-     static navigationOptions = ({navigation}) => {
-        console.log(navigation.events)
-
-    }
- 
+/*   static navigationOptions = ({navigation}) => {
+      
+      return{
+            tabBarLabel: <View style={{backgroundColor:'#0e0', padding: 20}}>
+            <Image
+            style={{width: 40, height:40}}
+            source={require('../assets/images/steak.png')}
+        />
+            </View>
+      }
+    } */
     state = {
         items: [
-            {id: '1', nome: 'arroz'},
-            {id: '2', nome: 'feijao'},
-            {id: '3', nome: 'macarrão'},
-            {id: '4', nome: 'carne'},
-            {id: '5', nome: 'milho'},
-            {id: '6', nome: 'batata doce'},
-            {id: '7', nome: 'ovos de codorna'},
-            {id: '8' ,nome: 'lasanha'},
+            {id: '1', nome: 'Bife de vaca'},
+            {id: '2', nome: 'Bife de franco'},
+            {id: '3', nome: 'Frango'},
+            {id: '4', nome: 'Bife suíno'},
         ],
-        countItems: this.props.sizeSelected.numberOfItems,
+        countItems: 1,
         itemSeletect: new Set(),
         isVisible: false
     }
@@ -42,31 +44,19 @@ class FoodsItems extends Component {
                 this.countNumberOfItems(active)
                 this.addItemSelectedInList(active, item)
             }}
-            disabled={this.state.countItems <= 1 ? true : false}
+            disabled={false}
             />
         )
     }
 
     countNumberOfItems = (active) => {
-        if(this.state.countItems > 1){
-            if(active){
-                this.setState({
-                        countItems: this.state.countItems + 1
-                    })
-            }else {
-                this.setState({countItems: this.state.countItems - 1})
-            }
+        console.log(active)
+        console.log(this.state.countItems)
+        if(!active){
+            this.props.navigation.navigate('FoodsItems')
         }
-        if(this.state.countItems <= 1) {
-            Alert.alert(
-                '',
-                "Gostaria de adicionar uma bebida?",
-                [
-                    {text: 'Sim', onPress: () => this.props.navigation.navigate('DrinksItems')},
-                    {text: 'Não', onPress: () => this.props.navigation.navigate('PayMode')}
-                ],
-                {cancelable:false}
-            )
+        else {
+            console.log('aqui')
        }
     }
 
@@ -85,11 +75,11 @@ class FoodsItems extends Component {
     render() {
         return (
             <View style={{flex: 1, marginLeft: 10, marginRight: 10, opacity: this.state.isVisible ? 0.1 : 1}}>
-                <Text style={styles.descriptionText}>{`Escolha ${this.state.countItems} ${this.state.countItems > 1 ? 'opções' : 'opção'}`}</Text>
+                <Text style={styles.descriptionText}>{`Escolha ${this.state.countItems} proteina`}</Text>
                 <View style={{flex: 1, backgroundColor: defaultThemes.colors.withe}}>
                     <GridOfItems
                         items={this.state.items}
-                        numColumns={3}
+                        numColumns={2}
                         renderItem={this.renderList}
                         keyExtractor={items => items.id}
                     />
@@ -98,6 +88,13 @@ class FoodsItems extends Component {
                         items={this.state.itemSeletect}
                     />
                 </View>
+                <Button
+                    title="next"
+                    onPress={() => this.props.navigation.navigate('FoodsItems', {
+                        active: true
+                    
+                    })}
+                />
 
             </View>
         )
@@ -143,4 +140,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default connect(mapStateToProps, null)(FoodsItems)
+export default connect(mapStateToProps, null)(Meats)

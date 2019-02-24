@@ -1,6 +1,7 @@
 import React from 'react'
 import { TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
+import defaultThemes from '../styles/defaultThemes';
 
 class ButtomCustomer extends React.Component {
 
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 20,
-    backgroundColor: "#fff",
+    backgroundColor: defaultThemes.withe,
     margin: 15,
     padding: 15,
     elevation: 3,

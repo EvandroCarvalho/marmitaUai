@@ -12,6 +12,7 @@ import { connect } from 'react-redux'
 import { getRestaurantsList } from '../actions/appServicesActions'
 import { setSelectedRestaurant } from '../actions/appServicesActions'
 import ModalComponent from '../components/modalComponent'
+import defaultThemes from '../styles/defaultThemes';
 
 const {width, height} = Dimensions.get('window')
 class ListRestaurants extends Component { 
@@ -125,7 +126,7 @@ class ListRestaurants extends Component {
 const styles = StyleSheet.create({
     container: {
         flex:1,
-        backgroundColor: '#fff',
+        backgroundColor: defaultThemes.colors.withe,
         width: width,
         height: height,
         marginLeft: 500

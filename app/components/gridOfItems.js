@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, FlatList } from 'react-native'
+import defaultThemes from '../styles/defaultThemes';
 
 
 class GridOfItems extends React.PureComponent {
@@ -18,7 +19,7 @@ class GridOfItems extends React.PureComponent {
     render() {
         const {numColumns} = this.props
         return (
-            <View style={{flex: 1, backgroundColor: "#fff"}}>
+            <View style={{flex: 1, backgroundColor: defaultThemes.colors.withe}}>
                 <FlatList
                     data={this.formatData(this.props.items, numColumns)}
                     renderItem={this.props.renderItem}
