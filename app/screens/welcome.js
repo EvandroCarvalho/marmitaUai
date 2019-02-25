@@ -67,7 +67,7 @@ class Welcome extends Component {
       <View style={[styles.container, {opacity: this.props.loading ? 0.5 : 1 }]}>
         <StatusBar backgroundColor={defaultThemes.colors.yellowTheme}/>
         <Animated.View style={[styles.animted, {marginLeft} ]} >
-          <Text style={styles.text}>MarmitaUai</Text>
+          <Text style={styles.text}>MarmitaO</Text>
         </Animated.View>
         <View style={{position: 'absolute'}}>
           {this.loading(this.props)}

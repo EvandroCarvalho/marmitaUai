@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Dimensions, Alert } from 'react-native'
+import { View, Text, StyleSheet, Dimensions, Alert, TouchableOpacity, Image } from 'react-native'
 import { connect } from 'react-redux'
 import FoodItemComponent from '../components/foodItemComponent';
 import ConfirmItemsSelect from '../components/confirmItemsSelect'
@@ -100,7 +100,30 @@ static navigationOptions = {
                         items={this.state.itemSeletect}
                     />
                 </View>
-
+                <View style={{margin: 10, flexDirection:'row', justifyContent:'space-between'}}>
+                    <View style={{alignItems:'flex-start', justifyContent: 'flex-end'}}>
+                        <TouchableOpacity
+                                onPress={() => this.props.navigation.goBack()}
+                        >
+                        <Image
+                            style={{width: 40, height:40, transform:[{rotate: '180deg'}]}}
+                            source={require('../assets/images/next.png')}
+                        />
+                    </TouchableOpacity>
+                    </View>
+                    <View style={{alignItems:'flex-end', justifyContent: 'flex-end'}}>
+                        <TouchableOpacity
+                            onPress={() => this.props.navigation.navigate('DrinksItems', {
+                                active: true
+                            })}
+                        >
+                        <Image
+                            style={{width: 40, height:40}}
+                            source={require('../assets/images/next.png')}
+                        />
+                        </TouchableOpacity>
+                    </View>
+                </View>
             </View>
         )
     }

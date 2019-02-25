@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Button } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { connect } from 'react-redux'
 import FoodItemComponent from '../components/foodItemComponent';
 import ConfirmItemsSelect from '../components/confirmItemsSelect'
@@ -88,13 +88,20 @@ class Meats extends Component {
                         items={this.state.itemSeletect}
                     />
                 </View>
-                <Button
-                    title="next"
-                    onPress={() => this.props.navigation.navigate('FoodsItems', {
-                        active: true
-                    
-                    })}
-                />
+                <View style={{alignItems:'flex-end', justifyContent: 'flex-end', marginBottom: 10}}>
+                    <TouchableOpacity
+                        title="next"
+                        onPress={() => this.props.navigation.navigate('FoodsItems', {
+                            active: true
+                        
+                        })}
+                    >
+                    <Image
+                        style={{width: 40, height:40}}
+                        source={require('../assets/images/next.png')}
+                    />
+                    </TouchableOpacity>
+                </View>
 
             </View>
         )

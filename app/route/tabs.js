@@ -1,4 +1,4 @@
- import { createMaterialTopTabNavigator, createAppContainer, NavigationScene } from 'react-navigation'
+ import { createMaterialTopTabNavigator, createAppContainer, NavigationEvents } from 'react-navigation'
 import FoodsItemsTab from '../screens/foodsItems'
 import React from 'react'
 import DrinksItemsTab from '../screens/drinksItems'
@@ -45,34 +45,51 @@ const componentIcon = (icons, active ) => {
 const TabNavigator = createMaterialTopTabNavigator({
     Meats: {
         screen: MeatsTab,
-         navigationOptions: {
-            tabBarLabel: () => componentIcon(icons.meats, true)
+         navigationOptions: ({navigation}) => {
+            return {
+                tabBarLabel: () => componentIcon(icons.meats, true)
+            }
         }
     },
     FoodsItems: {
         screen: FoodsItemsTab,
-        navigationOptions: {
-            tabBarOnPress: ({navigation, defaultHandler}) => navigation = null ,
+        navigationOptions: ({navigation}) => {
+            navigation.addListener('willFocus', () => navigation.setParams({active: true}))
+            return {
+            tabBarOnPress: ({navigation, defaultHandler}) =>  navigation = null,
             tabBarLabel: () => componentIcon(icons.complements, navigation.state.params.active)
+            }
         },
     },
     Salads: {
         screen: SaladsTab,
-        navigationOptions: {
-            tabBarLabel: componentIcon(icons.salads)
-        }
+        navigationOptions: ({navigation}) => {
+            navigation.addListener('willFocus', () => navigation.setParams({active: true}))
+            return {
+            tabBarOnPress: ({navigation, defaultHandler}) => navigation = null ,
+            tabBarLabel: () => componentIcon(icons.salads, navigation.state.params.active)
+            }
+        },      
     },
     DrinksItems: {
         screen: DrinksItemsTab,
-        navigationOptions: {
-            tabBarLabel: componentIcon(icons.drinks)
-        }
+        navigationOptions: ({navigation}) => {
+            navigation.addListener('willFocus', () => navigation.setParams({active: true}))
+            return {
+            tabBarOnPress: ({navigation, defaultHandler}) => navigation = null ,
+            tabBarLabel: () => componentIcon(icons.drinks, navigation.state.params.active)
+            }
+        },
     },
     PayMode: {
         screen: PayModeTab,
-        navigationOptions: {
-            tabBarLabel: componentIcon(icons.payMode)
-        }
+        navigationOptions: ({navigation}) => {
+            navigation.addListener('willFocus', () => navigation.setParams({active: true}))
+            return {
+            tabBarOnPress: ({navigation, defaultHandler}) => navigation = null ,
+            tabBarLabel: () => componentIcon(icons.payMode, navigation.state.params.active)
+            }
+        },
     },
   },
   { 
@@ -81,7 +98,7 @@ const TabNavigator = createMaterialTopTabNavigator({
             backgroundColor:defaultThemes.colors.withe,
             padding: 0,
             margin: 0,
-            height: 50
+            height: 40
             },
         style: {
             backgroundColor: defaultThemes.colors.withe,

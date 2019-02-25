@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Dimensions, Alert } from 'react-native'
+import { View, Text, StyleSheet, Dimensions, Alert, TouchableOpacity, Image } from 'react-native'
 import { connect } from 'react-redux'
 import FoodItemComponent from '../components/foodItemComponent';
 import ConfirmItemsSelect from '../components/confirmItemsSelect'
@@ -9,11 +9,6 @@ import defaultThemes from '../styles/defaultThemes';
 
 class FoodsItems extends Component {
 
-     static navigationOptions = ({navigation}) => {
-        console.log(navigation.events)
-
-    }
- 
     state = {
         items: [
             {id: '1', nome: 'arroz'},
@@ -82,7 +77,10 @@ class FoodsItems extends Component {
         }
     }
 
+    
     render() {
+        this.props.navigation.addListener('didFocus', () => console.log('carregou a tela'))
+        this.props.navigation.addListener('didBlur', () => console.log('mudou de tela'))
         return (
             <View style={{flex: 1, marginLeft: 10, marginRight: 10, opacity: this.state.isVisible ? 0.1 : 1}}>
                 <Text style={styles.descriptionText}>{`Escolha ${this.state.countItems} ${this.state.countItems > 1 ? 'opções' : 'opção'}`}</Text>
@@ -97,6 +95,30 @@ class FoodsItems extends Component {
                         visible={this.state.isVisible}
                         items={this.state.itemSeletect}
                     />
+                </View>
+                <View style={{margin: 10, flexDirection:'row', justifyContent:'space-between'}}>
+                    <View style={{alignItems:'flex-start', justifyContent: 'flex-end'}}>
+                        <TouchableOpacity
+                                onPress={() => this.props.navigation.goBack()}
+                        >
+                        <Image
+                            style={{width: 40, height:40, transform:[{rotate: '180deg'}]}}
+                            source={require('../assets/images/next.png')}
+                        />
+                    </TouchableOpacity>
+                    </View>
+                    <View style={{alignItems:'flex-end', justifyContent: 'flex-end'}}>
+                        <TouchableOpacity
+                            onPress={() => this.props.navigation.navigate('Salads', {
+                                active: true
+                            })}
+                        >
+                        <Image
+                            style={{width: 40, height:40}}
+                            source={require('../assets/images/next.png')}
+                        />
+                        </TouchableOpacity>
+                    </View>
                 </View>
 
             </View>
