@@ -1,4 +1,5 @@
- import { createMaterialTopTabNavigator, createAppContainer, NavigationEvents } from 'react-navigation'
+import { Animated, Easing } from 'react-native'
+import { createMaterialTopTabNavigator, createAppContainer, NavigationEvents } from 'react-navigation'
 import FoodsItemsTab from '../screens/foodsItems'
 import React from 'react'
 import DrinksItemsTab from '../screens/drinksItems'
@@ -27,14 +28,14 @@ const icons = {
 
 const componentIcon = (icons, active ) => {
     let color = defaultThemes.colors.withe
-    if(active) {
+     if(active) {
         color = defaultThemes.colors.yellowTheme
     }
 
     return (
-        <View style={{backgroundColor: color, padding: 20}}>
+        <View style={{margim: 10, backgroundColor: color, borderRadius: 10}}>
                     <Image
-                    style={{width: 40, height:37}}
+                    style={{width: 40, height:40}}
                     source={icons}
                 />
         </View>
@@ -47,68 +48,65 @@ const TabNavigator = createMaterialTopTabNavigator({
         screen: MeatsTab,
          navigationOptions: ({navigation}) => {
             return {
-                tabBarLabel: () => componentIcon(icons.meats, true)
+                tabBarLabel: ({focused}) => componentIcon(icons.meats, focused),
             }
         }
     },
     FoodsItems: {
         screen: FoodsItemsTab,
         navigationOptions: ({navigation}) => {
-            navigation.addListener('willFocus', () => navigation.setParams({active: true}))
+       //     navigation.addListener('willFocus', () => navigation.setParams({active: true}))
             return {
-            tabBarOnPress: ({navigation, defaultHandler}) =>  navigation = null,
-            tabBarLabel: () => componentIcon(icons.complements, navigation.state.params.active)
+            tabBarLabel: ({focused}) => componentIcon(icons.complements, focused)
             }
         },
     },
     Salads: {
         screen: SaladsTab,
         navigationOptions: ({navigation}) => {
-            navigation.addListener('willFocus', () => navigation.setParams({active: true}))
+       //     navigation.addListener('willFocus', () => navigation.setParams({active: true}))
             return {
-            tabBarOnPress: ({navigation, defaultHandler}) => navigation = null ,
-            tabBarLabel: () => componentIcon(icons.salads, navigation.state.params.active)
+            tabBarLabel: ({focused}) => componentIcon(icons.salads, focused)
             }
         },      
     },
     DrinksItems: {
         screen: DrinksItemsTab,
         navigationOptions: ({navigation}) => {
-            navigation.addListener('willFocus', () => navigation.setParams({active: true}))
+       //     navigation.addListener('willFocus', () => navigation.setParams({active: true}))
             return {
-            tabBarOnPress: ({navigation, defaultHandler}) => navigation = null ,
-            tabBarLabel: () => componentIcon(icons.drinks, navigation.state.params.active)
+            tabBarLabel: ({focused}) => componentIcon(icons.drinks, focused)
             }
         },
     },
     PayMode: {
         screen: PayModeTab,
         navigationOptions: ({navigation}) => {
-            navigation.addListener('willFocus', () => navigation.setParams({active: true}))
+       //     navigation.addListener('willFocus', () => navigation.setParams({active: true}))
             return {
-            tabBarOnPress: ({navigation, defaultHandler}) => navigation = null ,
-            tabBarLabel: () => componentIcon(icons.payMode, navigation.state.params.active)
+            tabBarLabel: ({focused}) => componentIcon(icons.payMode, focused)
             }
         },
     },
   },
   { 
      tabBarOptions: {
+        indicatorStyle: {
+            backgroundColor: '#fff'
+        },
         tabStyle: {
             backgroundColor:defaultThemes.colors.withe,
-            padding: 0,
-            margin: 0,
-            height: 40
+            padding: 5,
+            margin: 5,
+            height: 40,
+            borderColor: '#d3d3d3',
+            borderWidth: 1,
             },
         style: {
             backgroundColor: defaultThemes.colors.withe,
         },
-    }, 
-    transitionConfig: () => ({
-        transitionSpec: {
-          duration: 5000,
-        }
-      }),
+    },
+    tabBarPosition: 'bottom' ,
 });
   
 export default createAppContainer(TabNavigator);

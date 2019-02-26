@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Image, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import FoodItemComponent from '../components/foodItemComponent';
 import ConfirmItemsSelect from '../components/confirmItemsSelect'
@@ -29,7 +29,20 @@ class Meats extends Component {
         ],
         countItems: 1,
         itemSeletect: new Set(),
-        isVisible: false
+        isVisible: false,
+        animetedScreen: new Animated.ValueXY(0,0)
+    }
+
+    componentWillMount = () => {
+        Animated.timing(this.state.animetedScreen, {
+            toValue: {
+                x: -100,
+                y: 0
+            },
+            duration: 1000,
+            delay: 1000
+        }).start()
+        
     }
 
 
@@ -76,7 +89,7 @@ class Meats extends Component {
         return (
             <View style={{flex: 1, marginLeft: 10, marginRight: 10, opacity: this.state.isVisible ? 0.1 : 1}}>
                 <Text style={styles.descriptionText}>{`Escolha ${this.state.countItems} proteina`}</Text>
-                <View style={{flex: 1, backgroundColor: defaultThemes.colors.withe}}>
+                <View style={{flex: 1,backgroundColor: defaultThemes.colors.withe}}>
                     <GridOfItems
                         items={this.state.items}
                         numColumns={2}
@@ -88,21 +101,6 @@ class Meats extends Component {
                         items={this.state.itemSeletect}
                     />
                 </View>
-                <View style={{alignItems:'flex-end', justifyContent: 'flex-end', marginBottom: 10}}>
-                    <TouchableOpacity
-                        title="next"
-                        onPress={() => this.props.navigation.navigate('FoodsItems', {
-                            active: true
-                        
-                        })}
-                    >
-                    <Image
-                        style={{width: 40, height:40}}
-                        source={require('../assets/images/next.png')}
-                    />
-                    </TouchableOpacity>
-                </View>
-
             </View>
         )
     }

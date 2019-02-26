@@ -29,7 +29,7 @@ static navigationOptions = {
         ],
         countItems: 2,
         itemSeletect: new Set(),
-        isVisible: false
+        isVisible: false,
     }
 
 
@@ -99,30 +99,6 @@ static navigationOptions = {
                         visible={this.state.isVisible}
                         items={this.state.itemSeletect}
                     />
-                </View>
-                <View style={{margin: 10, flexDirection:'row', justifyContent:'space-between'}}>
-                    <View style={{alignItems:'flex-start', justifyContent: 'flex-end'}}>
-                        <TouchableOpacity
-                                onPress={() => this.props.navigation.goBack()}
-                        >
-                        <Image
-                            style={{width: 40, height:40, transform:[{rotate: '180deg'}]}}
-                            source={require('../assets/images/next.png')}
-                        />
-                    </TouchableOpacity>
-                    </View>
-                    <View style={{alignItems:'flex-end', justifyContent: 'flex-end'}}>
-                        <TouchableOpacity
-                            onPress={() => this.props.navigation.navigate('PayMode', {
-                                active: true
-                            })}
-                        >
-                        <Image
-                            style={{width: 40, height:40}}
-                            source={require('../assets/images/next.png')}
-                        />
-                        </TouchableOpacity>
-                    </View>
                 </View>
             </View>
         )
