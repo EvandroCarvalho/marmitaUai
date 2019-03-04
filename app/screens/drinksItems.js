@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Dimensions, Alert, TouchableOpacity, Image } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import FoodItemComponent from '../components/foodItemComponent';
 import ConfirmItemsSelect from '../components/confirmItemsSelect'
 import  GridOfItems from '../components/gridOfItems'
-import { NavigationEvents } from 'react-navigation'
 import defaultThemes from '../styles/defaultThemes';
+import {setDrinksOnObjectSeleted} from '../actions/appServicesActions'
 
 class DrinksItems extends Component {
 
@@ -25,11 +25,10 @@ static navigationOptions = {
             {id: '1', nome: 'Coca-Cola'},
             {id: '2', nome: 'Mineiro'},
             {id: '3', nome: 'Fanta Laranja'},
-            {id: '4', nome: 'Água Minetal'},
+            {id: '4', nome: 'Água Mineral'},
         ],
         countItems: 2,
-        itemSeletect: new Set(),
-        isVisible: false,
+        itemSeletect: [],
     }
 
 
@@ -41,52 +40,31 @@ static navigationOptions = {
             <FoodItemComponent
             item={item}
             onPress={(active) => {
-                this.countNumberOfItems(active)
                 this.addItemSelectedInList(active, item)
             }}
-            disabled={this.state.countItems <= 1 ? true : false}
+            disabled={false}
             />
         )
     }
 
-    countNumberOfItems = (active) => {
-        if(this.state.countItems > 2){
-            if(active){
-                this.setState({
-                        countItems: this.state.countItems + 1
-                    })
-            }else {
-                this.setState({countItems: this.state.countItems - 1})
-            }
-        }
-        if(this.state.countItems <= 1) {
-            Alert.alert(
-                '',
-                "Gostaria de adicionar uma bebida?",
-                [
-                    {text: 'Sim', onPress: () => this.props.navigation.navigate('DrinksItems')},
-                    {text: 'Não', onPress: () => this.props.navigation.navigate('PayMode')}
-                ],
-                {cancelable:false}
-            )
-       }
-    }
 
     addItemSelectedInList = (active, item) => {
-        if(!active) {
+        if(active) {
             this.setState( prevState => {
-                prevState.itemSeletect.add(item)
+                prevState.itemSeletect.push(item)
             })
         } else {
             this.setState( prevState => {
-                prevState.itemSeletect.delete(item)
+                let index = prevState.itemSeletect.indexOf(item)
+                prevState.itemSeletect.splice(index, 1)
             })
         }
     }
 
     render() {
+        this.props.navigation.addListener('willBlur', () => this.props.setDrinksOnObjectSeleted(this.state.itemSeletect))
         return (
-            <View style={{flex: 1, marginLeft: 10, marginRight: 10, opacity: this.state.isVisible ? 0.1 : 1}}>
+            <View style={{flex: 1, marginLeft: 10, marginRight: 10}}>
                 <Text style={styles.descriptionText}>{`Bebidas`}</Text>
                 <View style={{flex: 1, backgroundColor: defaultThemes.colors.withe}}>
                     <GridOfItems
@@ -94,10 +72,6 @@ static navigationOptions = {
                         numColumns={3}
                         renderItem={this.renderList}
                         keyExtractor={items => items.id}
-                    />
-                    <ConfirmItemsSelect
-                        visible={this.state.isVisible}
-                        items={this.state.itemSeletect}
                     />
                 </View>
             </View>
@@ -144,4 +118,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default connect(mapStateToProps, null)(DrinksItems)
+export default connect(mapStateToProps, {setDrinksOnObjectSeleted})(DrinksItems)

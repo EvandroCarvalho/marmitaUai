@@ -16,7 +16,7 @@ class FoodItemComponent extends React.PureComponent {
                     this.setState({
                         activeButtom: !this.state.activeButtom
                     })
-                    this.props.onPress(this.state.activeButtom)
+                    this.props.onPress(!this.state.activeButtom)
                 } }
             >
                 <Text style={[styles.textStyle, {color: this.state.activeButtom ? defaultThemes.colors.withe: '#64666a'}]}>{this.props.item.nome}</Text>

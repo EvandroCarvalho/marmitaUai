@@ -1,6 +1,13 @@
 import { loadingModalListRestaurants } from "./types";
 import { getListOfRestaurants } from '../services/appServices'
-import { restaurantsList, selectedRestaurant, selectedSize } from './types'
+import { restaurantsList,
+    selectedRestaurant,
+    selectedSize,
+    meatSelected,
+    complementSelected,
+    saladsSelected,
+    drinksSelected,
+    initialStateItemsSelected } from './types'
 
 
 export const getRestaurantsList = (userLocation) => {
@@ -35,6 +42,39 @@ export const setSizeChosen = (lunchSize, {navigation, selectedRestaurant}) => {
         navigation.navigate('foodsItems', {
             title: selectedRestaurant.nome
         })
+    }
+}
 
+export const setMeatsOnObjectItemsSelected = (meats) => {
+    return {
+        type: meatSelected,
+        payload: meats
+    }
+}
+
+export const setComplementsOnObjectSelected = (complements) => {
+    return {
+        type: complementSelected,
+        payload: complements 
+    }
+}
+
+export const setSaladsOnObjectSelected = (salads) => {
+    return {
+        type: saladsSelected,
+        payload: salads
+    }
+}
+
+export const setDrinksOnObjectSeleted = (drinks) => {
+    return {
+        type: drinksSelected,
+        payload: drinks
+    }
+}
+
+export const cleanItemsSelected = () => {
+    return {
+        type: initialStateItemsSelected
     }
 }

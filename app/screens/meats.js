@@ -1,25 +1,15 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Image, Animated } from 'react-native'
+import { View, Text, StyleSheet, Animated, Alert } from 'react-native'
 import { connect } from 'react-redux'
-import FoodItemComponent from '../components/foodItemComponent';
+import FoodItemComponent from '../components/foodItemComponent'
 import ConfirmItemsSelect from '../components/confirmItemsSelect'
 import  GridOfItems from '../components/gridOfItems'
-import { NavigationEvents } from 'react-navigation'
-import defaultThemes from '../styles/defaultThemes';
+import defaultThemes from '../styles/defaultThemes'
+import { setMeatsOnObjectItemsSelected, cleanItemsSelected } from '../actions/appServicesActions'
 
 class Meats extends Component {
 
-/*   static navigationOptions = ({navigation}) => {
-      
-      return{
-            tabBarLabel: <View style={{backgroundColor:'#0e0', padding: 20}}>
-            <Image
-            style={{width: 40, height:40}}
-            source={require('../assets/images/steak.png')}
-        />
-            </View>
-      }
-    } */
+
     state = {
         items: [
             {id: '1', nome: 'Bife de vaca'},
@@ -27,13 +17,14 @@ class Meats extends Component {
             {id: '3', nome: 'Frango'},
             {id: '4', nome: 'Bife suíno'},
         ],
-        countItems: 1,
-        itemSeletect: new Set(),
-        isVisible: false,
+        countItems: 0,
+        itemSeletect: [],
+        showInformation: true,
         animetedScreen: new Animated.ValueXY(0,0)
     }
 
     componentWillMount = () => {
+        this.props.cleanItemsSelected()
         Animated.timing(this.state.animetedScreen, {
             toValue: {
                 x: -100,
@@ -42,7 +33,6 @@ class Meats extends Component {
             duration: 1000,
             delay: 1000
         }).start()
-        
     }
 
 
@@ -63,42 +53,52 @@ class Meats extends Component {
     }
 
     countNumberOfItems = (active) => {
-        console.log(active)
-        console.log(this.state.countItems)
-        if(!active){
-            this.props.navigation.navigate('FoodsItems')
+        if(this.state.countItems >= 1 && this.state.showInformation) {
+            Alert.alert(
+                '',
+                "Tudo bem em adicionar mais proteína! Mas será cobrado o valor de x por adicional ok!? ;)",
+                [
+                    {text: 'OK', onPress: () => false}
+                ],
+                {cancelable:true}
+                ),
+            this.setState({showInformation: false})
         }
-        else {
-            console.log('aqui')
-       }
+        else if(active){
+            this.setState({
+                countItems: this.state.countItems + 1
+            })
+            this.state.showInformation ? this.props.navigation.navigate('FoodsItems') : ''
+        }else {
+            this.setState({countItems: this.state.countItems - 1})
+        }
     }
 
+
     addItemSelectedInList = (active, item) => {
-        if(!active) {
+        if(active) {
             this.setState( prevState => {
-                prevState.itemSeletect.add(item)
+                prevState.itemSeletect.push(item)
             })
         } else {
             this.setState( prevState => {
-                prevState.itemSeletect.delete(item)
+                let index = prevState.itemSeletect.indexOf(item)
+                prevState.itemSeletect.splice(index, 1)
             })
         }
     }
 
     render() {
+        this.props.navigation.addListener('willBlur', () => this.props.setMeatsOnObjectItemsSelected(this.state.itemSeletect))
         return (
-            <View style={{flex: 1, marginLeft: 10, marginRight: 10, opacity: this.state.isVisible ? 0.1 : 1}}>
-                <Text style={styles.descriptionText}>{`Escolha ${this.state.countItems} proteina`}</Text>
+            <View style={{flex: 1, marginLeft: 10, marginRight: 10}}>
+                <Text style={styles.descriptionText}>{`Escolha 1 proteina`}</Text>
                 <View style={{flex: 1,backgroundColor: defaultThemes.colors.withe}}>
                     <GridOfItems
                         items={this.state.items}
                         numColumns={2}
                         renderItem={this.renderList}
                         keyExtractor={items => items.id}
-                    />
-                    <ConfirmItemsSelect
-                        visible={this.state.isVisible}
-                        items={this.state.itemSeletect}
                     />
                 </View>
             </View>
@@ -145,4 +145,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default connect(mapStateToProps, null)(Meats)
+export default connect(mapStateToProps, {setMeatsOnObjectItemsSelected, cleanItemsSelected})(Meats)

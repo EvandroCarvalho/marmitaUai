@@ -1,6 +1,6 @@
 import { Animated, Easing } from 'react-native'
-import { createMaterialTopTabNavigator, createAppContainer, NavigationEvents } from 'react-navigation'
-import FoodsItemsTab from '../screens/foodsItems'
+import { createMaterialTopTabNavigator, createAppContainer } from 'react-navigation'
+import FoodsItemsTab from '../screens/foodsComplements'
 import React from 'react'
 import DrinksItemsTab from '../screens/drinksItems'
 import PayModeTab from '../screens/payMode'
@@ -43,7 +43,7 @@ const componentIcon = (icons, active ) => {
 }
 
 
-const TabNavigator = createMaterialTopTabNavigator({
+const routerConfig = {
     Meats: {
         screen: MeatsTab,
          navigationOptions: ({navigation}) => {
@@ -55,58 +55,76 @@ const TabNavigator = createMaterialTopTabNavigator({
     FoodsItems: {
         screen: FoodsItemsTab,
         navigationOptions: ({navigation}) => {
-       //     navigation.addListener('willFocus', () => navigation.setParams({active: true}))
+            navigation.addListener('willFocus', () => componentIcon(icons.complements, true))
             return {
-            tabBarLabel: ({focused}) => componentIcon(icons.complements, focused)
+                tabBarLabel: ({focused}) => componentIcon(icons.complements, focused)
             }
         },
     },
-    Salads: {
+    SaladsItems: {
         screen: SaladsTab,
         navigationOptions: ({navigation}) => {
-       //     navigation.addListener('willFocus', () => navigation.setParams({active: true}))
+            navigation.addListener('willFocus', () => componentIcon(icons.salads, true))
             return {
-            tabBarLabel: ({focused}) => componentIcon(icons.salads, focused)
+                tabBarLabel: ({focused}) => componentIcon(icons.salads, focused)
             }
         },      
     },
     DrinksItems: {
         screen: DrinksItemsTab,
         navigationOptions: ({navigation}) => {
-       //     navigation.addListener('willFocus', () => navigation.setParams({active: true}))
+            navigation.addListener('willFocus', () => componentIcon(icons.drinks, true))
             return {
-            tabBarLabel: ({focused}) => componentIcon(icons.drinks, focused)
+                tabBarLabel: ({focused}) => componentIcon(icons.drinks, focused)
             }
         },
     },
-    PayMode: {
+/*     PayMode: {
         screen: PayModeTab,
         navigationOptions: ({navigation}) => {
-       //     navigation.addListener('willFocus', () => navigation.setParams({active: true}))
+            navigation.addListener('willFocus', () => componentIcon(icons.payMode, true))
             return {
-            tabBarLabel: ({focused}) => componentIcon(icons.payMode, focused)
+                tabBarLabel: ({focused}) => componentIcon(icons.payMode, focused)
             }
         },
-    },
-  },
-  { 
-     tabBarOptions: {
-        indicatorStyle: {
-            backgroundColor: '#fff'
-        },
-        tabStyle: {
-            backgroundColor:defaultThemes.colors.withe,
-            padding: 5,
-            margin: 5,
-            height: 40,
-            borderColor: '#d3d3d3',
-            borderWidth: 1,
-            },
-        style: {
-            backgroundColor: defaultThemes.colors.withe,
-        },
-    },
-    tabBarPosition: 'bottom' ,
-});
+    }, */
+}
+
+const tabBarConfig = { 
+    tabBarOptions: {
+       indicatorStyle: {
+           backgroundColor: '#fff'
+       },
+       tabStyle: {
+           backgroundColor:defaultThemes.colors.withe,
+           padding: 5,
+           margin: 5,
+           height: 40,
+           borderColor: '#d3d3d3',
+           borderWidth: 1,
+           },
+       style: {
+           backgroundColor: defaultThemes.colors.withe,
+       },
+   },
+   tabBarPosition: 'bottom',
+   animationEnabled:true,
+   lazy: true,
+   transitionConfig: ({scene}) => {
+       console.log(scene.route)
+       if(scene.route.index) {
+           return {
+           transitionSpec: {
+               duration: 5000,
+               easing: Easing.out(Easing.poly(4)),
+               timing: Animated.timing,
+               },    
+           }
+       }
+   },
+}
+
+
+
   
-export default createAppContainer(TabNavigator);
+export default createMaterialTopTabNavigator(routerConfig, tabBarConfig)

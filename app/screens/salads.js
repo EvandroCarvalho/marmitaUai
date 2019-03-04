@@ -1,22 +1,15 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Dimensions, Alert, TouchableOpacity, Image } from 'react-native'
+import { View, Text, StyleSheet, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import FoodItemComponent from '../components/foodItemComponent';
 import ConfirmItemsSelect from '../components/confirmItemsSelect'
 import  GridOfItems from '../components/gridOfItems'
-import { NavigationEvents } from 'react-navigation'
-import defaultThemes from '../styles/defaultThemes';
+import defaultThemes from '../styles/defaultThemes'
+import { setSaladsOnObjectSelected } from '../actions/appServicesActions'
 
 class Salads extends Component {
 
-/*     static navigationOptions = ({navigation}) => {
-        const { params } = navigation.state;
-        console.log(params.title)
-        return {
-        title: `${params.title}`
-        }
-    }
- */
+
 static navigationOptions = {
     header: null
 }
@@ -27,9 +20,9 @@ static navigationOptions = {
             {id: '3', nome: 'Rucula'},
             {id: '4', nome: 'Brocolis'},
         ],
-        countItems: 2,
-        itemSeletect: new Set(),
-        isVisible: false,
+        countItems: 0,
+        itemSeletect: [],
+        showInformation: true
     }
 
 
@@ -44,60 +37,61 @@ static navigationOptions = {
                 this.countNumberOfItems(active)
                 this.addItemSelectedInList(active, item)
             }}
-            disabled={this.state.countItems <= 1 ? true : false}
+            disabled={false}
             />
         )
     }
 
+ 
+
     countNumberOfItems = (active) => {
-        if(this.state.countItems > 2){
-            if(active){
-                this.setState({
-                        countItems: this.state.countItems + 1
-                    })
-            }else {
-                this.setState({countItems: this.state.countItems - 1})
-            }
-        }
-        if(this.state.countItems <= 1) {
+        if(this.state.countItems >= 2 && this.state.showInformation) {
             Alert.alert(
                 '',
-                "Gostaria de adicionar uma bebida?",
+                "Tudo bem em adicionar mais salada! Mas será cobrado o valor de x por adicional ok!? ;)",
                 [
-                    {text: 'Sim', onPress: () => this.props.navigation.navigate('DrinksItems')},
-                    {text: 'Não', onPress: () => this.props.navigation.navigate('PayMode')}
+                    {text: 'OK', onPress: () => false}
                 ],
-                {cancelable:false}
-            )
-       }
+                {cancelable:true}
+                ),
+                this.setState({showInformation: false})
+                this.setState({countItems: this.state.countItems - 1})
+            }
+        else if(active){
+            this.setState({
+                countItems: this.state.countItems + 1
+            })
+            this.state.showInformation && this.state.countItems >= 1 ? this.props.navigation.navigate('DrinksItems') : ''
+        }else {
+            this.setState({countItems: this.state.countItems - 1})
+        }
     }
 
     addItemSelectedInList = (active, item) => {
-        if(!active) {
+        if(active) {
             this.setState( prevState => {
-                prevState.itemSeletect.add(item)
+                prevState.itemSeletect.push(item)
             })
         } else {
             this.setState( prevState => {
-                prevState.itemSeletect.delete(item)
+                let index = prevState.itemSeletect.indexOf(item)
+                prevState.itemSeletect.splice(index, 1)
             })
         }
     }
 
     render() {
+     //   console.log(this.props.itemsSelected)
+        this.props.navigation.addListener('willBlur', () => this.props.setSaladsOnObjectSelected(this.state.itemSeletect))
         return (
-            <View style={{flex: 1, marginLeft: 10, marginRight: 10, opacity: this.state.isVisible ? 0.1 : 1}}>
-                <Text style={styles.descriptionText}>{`Saladas`}</Text>
+            <View style={{flex: 1, marginLeft: 10, marginRight: 10}}>
+                <Text style={styles.descriptionText}>{`Escolha 2 opções de saladas`}</Text>
                 <View style={{flex: 1, backgroundColor: defaultThemes.colors.withe}}>
                     <GridOfItems
                         items={this.state.items}
                         numColumns={3}
                         renderItem={this.renderList}
                         keyExtractor={items => items.id}
-                    />
-                    <ConfirmItemsSelect
-                        visible={this.state.isVisible}
-                        items={this.state.itemSeletect}
                     />
                 </View>
             </View>
@@ -108,7 +102,8 @@ static navigationOptions = {
 mapStateToProps = (state) => (
     {
         selectedRestaurant: state.restaurantsReducer.selectedRestaurant,
-        sizeSelected: state.restaurantsReducer.sizeSelected
+        sizeSelected: state.restaurantsReducer.sizeSelected,
+        itemsSelected: state.restaurantsReducer.itemsSelected
     }
 )
 
@@ -144,4 +139,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default connect(mapStateToProps, null)(Salads)
+export default connect(mapStateToProps, {setSaladsOnObjectSelected})(Salads)

@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Dimensions, Alert, TouchableOpacity, Image } from 'react-native'
+import { View, Text, StyleSheet, Alert } from 'react-native'
 import { connect } from 'react-redux'
-import FoodItemComponent from '../components/foodItemComponent';
+import FoodItemComponent from '../components/foodItemComponent'
 import ConfirmItemsSelect from '../components/confirmItemsSelect'
 import  GridOfItems from '../components/gridOfItems'
-import { NavigationEvents } from 'react-navigation'
-import defaultThemes from '../styles/defaultThemes';
+import defaultThemes from '../styles/defaultThemes'
+import { setComplementsOnObjectSelected } from '../actions/appServicesActions'
+
 
 class FoodsItems extends Component {
 
@@ -14,15 +15,15 @@ class FoodsItems extends Component {
             {id: '1', nome: 'arroz'},
             {id: '2', nome: 'feijao'},
             {id: '3', nome: 'macarrão'},
-            {id: '4', nome: 'carne'},
+            {id: '4', nome: 'ovo'},
             {id: '5', nome: 'milho'},
             {id: '6', nome: 'batata doce'},
             {id: '7', nome: 'ovos de codorna'},
             {id: '8' ,nome: 'lasanha'},
         ],
         countItems: this.props.sizeSelected.numberOfItems,
-        itemSeletect: new Set(),
-        isVisible: false,
+        itemSeletect: [],
+        showInformation: true
     }
 
 
@@ -37,61 +38,62 @@ class FoodsItems extends Component {
                 this.countNumberOfItems(active)
                 this.addItemSelectedInList(active, item)
             }}
-            disabled={this.state.countItems <= 1 ? true : false}
+            disabled={false}
             />
         )
     }
 
     countNumberOfItems = (active) => {
-        if(this.state.countItems > 1){
-            if(active){
-                this.setState({
-                        countItems: this.state.countItems + 1
-                    })
-            }else {
-                this.setState({countItems: this.state.countItems - 1})
-            }
-        }
-        if(this.state.countItems <= 1) {
+        if(this.state.countItems <= 0 && this.state.showInformation) {
             Alert.alert(
                 '',
-                "Gostaria de adicionar uma bebida?",
+                "Tudo bem em adicionar mais complemento! Mas será cobrado o valor de x por adicional ok!? ;)",
                 [
-                    {text: 'Sim', onPress: () => this.props.navigation.navigate('DrinksItems')},
-                    {text: 'Não', onPress: () => this.props.navigation.navigate('PayMode')}
+                    {text: 'OK', onPress: () => false}
                 ],
-                {cancelable:false}
-            )
-       }
+                {cancelable:true}
+                ),
+                this.setState({showInformation: false})
+                this.setState({countItems: this.state.countItems - 1})
+            }
+        else if(active){
+            this.setState({
+                countItems: this.state.countItems - 1
+            })
+            this.state.showInformation && this.state.countItems <= 1 ? this.props.navigation.navigate('SaladsItems') : ''
+        }else {
+            this.setState({countItems: this.state.countItems + 1})
+        }
     }
 
     addItemSelectedInList = (active, item) => {
-        if(!active) {
+        if(active) {
             this.setState( prevState => {
-                prevState.itemSeletect.add(item)
+                prevState.itemSeletect.push(item)
             })
         } else {
             this.setState( prevState => {
-                prevState.itemSeletect.delete(item)
+                let index = prevState.itemSeletect.indexOf(item)
+                prevState.itemSeletect.splice(index, 1)
             })
         }
     }
 
     
     render() {
+        this.props.navigation.addListener('willBlur', () => this.props.setComplementOnObjectSeleteds(this.state.itemSeletect))
+        console.log(this.props.itemsSelected)
         return (
-            <View style={{flex: 1, marginLeft: 10, marginRight: 10, opacity: this.state.isVisible ? 0.1 : 1}}>
-                <Text style={styles.descriptionText}>{`Escolha ${this.state.countItems} ${this.state.countItems > 1 ? 'opções' : 'opção'}`}</Text>
+            <View style={{flex: 1, marginLeft: 10, marginRight: 10}}>
+                <Text style={styles.descriptionText}>
+                    {`Escolha ${this.state.countItems > 0 ? this.state.countItems : 0} ${this.state.countItems > 1 ? 'opções' : 'opção'}`}
+                </Text>
                 <View style={{flex: 1, backgroundColor: defaultThemes.colors.withe}}>
                     <GridOfItems
                         items={this.state.items}
                         numColumns={3}
                         renderItem={this.renderList}
                         keyExtractor={items => items.id}
-                    />
-                    <ConfirmItemsSelect
-                        visible={this.state.isVisible}
-                        items={this.state.itemSeletect}
                     />
                 </View>
             </View>
@@ -102,7 +104,8 @@ class FoodsItems extends Component {
 mapStateToProps = (state) => (
     {
         selectedRestaurant: state.restaurantsReducer.selectedRestaurant,
-        sizeSelected: state.restaurantsReducer.sizeSelected
+        sizeSelected: state.restaurantsReducer.sizeSelected,
+        itemsSelected: state.restaurantsReducer.itemsSelected
     }
 )
 
@@ -138,4 +141,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default connect(mapStateToProps, null)(FoodsItems)
+export default connect(mapStateToProps, {setComplementOnObjectSeleteds: setComplementsOnObjectSelected})(FoodsItems)
