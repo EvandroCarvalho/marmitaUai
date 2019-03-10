@@ -46,13 +46,13 @@ class Welcome extends Component {
     if(modalVisible) {
       return (
         <View>
-        <ModalComponent
-        visible={modalVisible}
-        loadIndicator={loading}
-        color={defaultThemes.colors.yellowTheme}
-        />
-        <Text style={{color: '#e54',fontSize: 20,}}>Buscando sua localização</Text>
-      </View>
+          <ModalComponent
+            visible={modalVisible}
+            loadIndicator={loading}
+            color={defaultThemes.colors.yellowTheme}
+            msg={'Buscando sua localização'}
+          />
+        </View>
       )
     }
   }

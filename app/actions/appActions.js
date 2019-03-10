@@ -1,14 +1,14 @@
 import { NetInfo } from 'react-native'
 import { 
-    loading,
-    loadingModal,
-    connectionStatus,
-    locationByAndroidSucess,
-    locationByAndroidError,
-    locationByCEPSucess,
-    locationByCEPError,
-    locationByAddressSucess,
-    locationByAddressError
+    LOADING,
+    LOADING_MODAL,
+    CONNECTION_STATUS,
+    LOCATION_BY_ANDROID_SUCCESS,
+    LOCATION_BY_ANDROID_ERROR,
+    LOCATION_BY_CEP_SUCCESS,
+    LOCATION_BY_CEP_ERROR,
+    LOCATION_BY_ADDRESS_SUCCESS,
+    LOCATION_BY_ADDRESS_ERROR
          } from './types'
 import { consultByAdress } from '../services/googleAPIService'
 import { consultViaCepService } from '../services/viaCepService'
@@ -18,7 +18,7 @@ export const verifyConnection = () => {
     return dispatch => {
     NetInfo.getConnectionInfo().then(connectionInfo => {
         dispatch({
-            type: connectionStatus,
+            type: CONNECTION_STATUS,
             payload: connectionInfo.type
         })
     })
@@ -28,7 +28,7 @@ export const verifyConnection = () => {
 export const getLocationByAndroidAPI = ({navigation}) => {
     return dispatch => {
         dispatch({
-            type: loadingModal
+            type: LOADING_MODAL
         })
         navigator.geolocation.getCurrentPosition(
             ({coords}) => {
@@ -47,30 +47,32 @@ export const getLocationByAndroidAPI = ({navigation}) => {
 
 getLocationByAndroidAPISucesss = (dispatch, coords, navigation) => {
     dispatch({
-        type: locationByAndroidSucess,
+        type: LOCATION_BY_ANDROID_SUCCESS,
         payload: coords
     })
-    navigation.navigate('ListRestaurants')
+    navigation.navigate('listRestaurants')
 }
 
 getLocationByAndroidAPIError = (dispach,navigation) => {
     dispach({
-        type:locationByAndroidError
+        type:LOCATION_BY_ANDROID_ERROR
     })
     navigation.navigate('postCode')
 }
 
  export const getLocationByAddress = (address, navigation) => {
+     console.log(address)
     return async dispatch => {
         dispatch({
-            type: loading
+            type: LOADING
         })
         try {
         let { results } = await consultByAdress(address)
+        console.log(results)
             if (results.length === 0 ) {
                 return getLocationByAddressError(dispatch)
             }
-            let response = createAddressObject(results[0])
+            let response = createAddressObject(results[0], address)
             response = { ...response, number: address.number, complement: address.complement }
             getLocationByAddressSucess(dispatch, response, navigation)
         }
@@ -82,15 +84,15 @@ getLocationByAndroidAPIError = (dispach,navigation) => {
 
 getLocationByAddressSucess = (dispatch, response, navigation) => {
     dispatch({
-        type: locationByAddressSucess,
+        type: LOCATION_BY_ADDRESS_SUCCESS,
         payload: response
     })
-    navigation.navigate('ListRestaurants')
+    navigation.navigate('listRestaurants')
 }
 
 getLocationByAddressError = (dispatch) => {
     dispatch({
-        type: locationByAddressError
+        type: LOCATION_BY_ADDRESS_ERROR
     })
 }
 
@@ -98,53 +100,49 @@ export const getLocationByCEP = (postCode, {navigation}) => {
     let responseViaCep = ''
     return async dispatch => {
         dispatch({
-            type: loadingModal
+            type: LOADING_MODAL
         })
         try {
             responseViaCep = await consultViaCepService(postCode)
             if(responseViaCep.erro) {
                 return getLocationByCEPError(dispatch)
             } else {
-                let { logradouro: street, localidade: city } = responseViaCep
-                let { results } = await consultByAdress({street, city})
-                let response = createAddressObject(results[0])
-            response = {...response, street: responseViaCep.logradouro, postCode}
-            getLocationByCEPSucess(dispatch, response, navigation)
+                let { logradouro: street, localidade: city, bairro: neighborhood, uf: state, cep: postCode } = responseViaCep
+                let { results } = await consultByAdress({street, city, neighborhood})
+                let response = createAddressObject(results[0], {street, city, neighborhood, state, postCode})
+                getLocationByCEPSucess(dispatch, response, navigation)
             }
         } catch(error) {
-            getLocationByCEPError(dispatch)        }
+            getLocationByCEPError(dispatch)        
+        }
     }
 }
 
 
-createAddressObject = (response) => {
-    let address = {}
+createAddressObject = (response, address) => {
     let { location } = response.geometry
-    let { address_components } = response
     address = { 
         latitude: location.lat,
         longitude: location.lng,
-/*        street: address_components[0].long_name,
-        neighborhood: address_components[1].long_name,
-        city: address_components[2].long_name,
-        state: address_components[3].long_name,
-        country: address_components[4].long_name,
-        postCode: address_components[5] ? address_components[5].long_name : ''
- */     }
-     return address
-
+        street: address.street,
+        neighborhood: address.neighborhood,
+        city: address.city,
+        state: address.state,
+        postCode: address.postCode
+    }
+    return address
 }
 
 getLocationByCEPSucess = (dispatch, result, navigation) => {
     dispatch({
-        type: locationByCEPSucess,
+        type: LOCATION_BY_CEP_SUCCESS,
         payload: result
     })
-    navigation.navigate('ListRestaurants')
+    navigation.navigate('listRestaurants')
 }
 
 getLocationByCEPError = (dispatch) => {
     dispatch({
-        type: locationByCEPError
+        type: LOCATION_BY_CEP_ERROR
     })
 }

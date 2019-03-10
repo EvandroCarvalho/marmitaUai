@@ -52,8 +52,16 @@ class Meats extends Component {
         )
     }
 
-    countNumberOfItems = (active) => {
-        if(this.state.countItems >= 1 && this.state.showInformation) {
+    countNumberOfItems = async (active) => {
+        if(active){
+            await this.setState({
+                countItems: this.state.countItems + 1
+            })
+            this.state.showInformation && this.state.countItems <= 1 ? await this.props.navigation.navigate('FoodsItems') : ''
+        }else if(!active) {
+            await this.setState({countItems: this.state.countItems - 1})
+        }
+        if(this.state.countItems > 1 && this.state.showInformation) {
             Alert.alert(
                 '',
                 "Tudo bem em adicionar mais proteína! Mas será cobrado o valor de x por adicional ok!? ;)",
@@ -62,15 +70,7 @@ class Meats extends Component {
                 ],
                 {cancelable:true}
                 ),
-            this.setState({showInformation: false})
-        }
-        else if(active){
-            this.setState({
-                countItems: this.state.countItems + 1
-            })
-            this.state.showInformation ? this.props.navigation.navigate('FoodsItems') : ''
-        }else {
-            this.setState({countItems: this.state.countItems - 1})
+            await this.setState({showInformation: false})
         }
     }
 
@@ -108,8 +108,8 @@ class Meats extends Component {
 
 mapStateToProps = (state) => (
     {
-        selectedRestaurant: state.restaurantsReducer.selectedRestaurant,
-        sizeSelected: state.restaurantsReducer.sizeSelected
+        selectedRestaurant: state.appServiceReducer.selectedRestaurant,
+        sizeSelected: state.appServiceReducer.sizeSelected
     }
 )
 
@@ -131,9 +131,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         elevation: 0,
         borderWidth: 0
-    },
-    selected: {
-        backgroundColor: '#fe1',
     },
     descriptionText: {
         textAlign: 'center',

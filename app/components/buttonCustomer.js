@@ -14,12 +14,11 @@ class ButtomCustomer extends React.Component {
     }
   }
 
-
   render() {
     return (
       <TouchableOpacity
-        style={[styles.buttom, {opacity: this.props.disabled ? 1 : 0.5}]}
-        disabled = { !this.props.disabled }
+        style={[styles.buttom, this.props.style, {opacity: this.props.disabled ? 1 : 0.5}]}
+        disabled={ !this.props.disabled }
         onPress={() => {
           this.props.onPress()
           this.setState({loading: false})
@@ -32,8 +31,9 @@ class ButtomCustomer extends React.Component {
 }
 
 mapStateToProps = (state) => (
-  
-  {loading: state.appReducer.loading}
+  {
+    loading: state.appReducer.loading
+  }
 )
 
 export default connect(mapStateToProps,null)(ButtomCustomer)
@@ -43,16 +43,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 20,
-    backgroundColor: defaultThemes.withe,
+    backgroundColor: defaultThemes.colors.withe,
     margin: 15,
     padding: 15,
     elevation: 3,
-    borderBottomColor: '#d3d3d3',
+    borderBottomColor: defaultThemes.colors.yellowTheme,
     borderBottomWidth: 4,
     borderLeftWidth: 2,
     borderRightWidth: 2,
-    borderLeftColor: '#d3d3d3',
-    borderRightColor: '#d3d3d3',
+    borderColor: defaultThemes.colors.yellowTheme,
     opacity: 1
     }
 })

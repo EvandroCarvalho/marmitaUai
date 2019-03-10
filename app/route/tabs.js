@@ -3,7 +3,7 @@ import { createMaterialTopTabNavigator, createAppContainer } from 'react-navigat
 import FoodsItemsTab from '../screens/foodsComplements'
 import React from 'react'
 import DrinksItemsTab from '../screens/drinksItems'
-import PayModeTab from '../screens/payMode'
+import PayModeTab from '../screens/confirm'
 import MeatsTab from '../screens/meats'
 import SaladsTab from '../screens/salads'
 import { Image, View } from 'react-native'
@@ -55,7 +55,6 @@ const routerConfig = {
     FoodsItems: {
         screen: FoodsItemsTab,
         navigationOptions: ({navigation}) => {
-            navigation.addListener('willFocus', () => componentIcon(icons.complements, true))
             return {
                 tabBarLabel: ({focused}) => componentIcon(icons.complements, focused)
             }
@@ -64,7 +63,6 @@ const routerConfig = {
     SaladsItems: {
         screen: SaladsTab,
         navigationOptions: ({navigation}) => {
-            navigation.addListener('willFocus', () => componentIcon(icons.salads, true))
             return {
                 tabBarLabel: ({focused}) => componentIcon(icons.salads, focused)
             }
@@ -73,21 +71,11 @@ const routerConfig = {
     DrinksItems: {
         screen: DrinksItemsTab,
         navigationOptions: ({navigation}) => {
-            navigation.addListener('willFocus', () => componentIcon(icons.drinks, true))
             return {
                 tabBarLabel: ({focused}) => componentIcon(icons.drinks, focused)
             }
         },
     },
-/*     PayMode: {
-        screen: PayModeTab,
-        navigationOptions: ({navigation}) => {
-            navigation.addListener('willFocus', () => componentIcon(icons.payMode, true))
-            return {
-                tabBarLabel: ({focused}) => componentIcon(icons.payMode, focused)
-            }
-        },
-    }, */
 }
 
 const tabBarConfig = { 
@@ -108,7 +96,7 @@ const tabBarConfig = {
        },
    },
    tabBarPosition: 'bottom',
-   animationEnabled:true,
+/*    animationEnabled:true,
    lazy: true,
    transitionConfig: ({scene}) => {
        console.log(scene.route)
@@ -121,7 +109,7 @@ const tabBarConfig = {
                },    
            }
        }
-   },
+   }, */
 }
 
 

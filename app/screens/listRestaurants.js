@@ -44,8 +44,9 @@ class ListRestaurants extends Component {
                 x:-500,
                 y:0
             },
+ //           delay: 2000,
             duration: 1000,
-          //  easing: Easing.elastic(2)
+            easing: Easing.elastic(2)
             
         }).start()
     }
@@ -58,11 +59,12 @@ class ListRestaurants extends Component {
     waitingGetList = ({modalVisible, loading}) => {
         return (
             <View>
-            <ModalComponent
-                visible={modalVisible}
-                loading={loading}
-            />
-        </View>
+                <ModalComponent
+                    visible={modalVisible}
+                    loading={loading}
+                    msg={"Buscando restaurantes próximos"}
+                />
+            </View>
         )
     }
 
@@ -84,6 +86,7 @@ class ListRestaurants extends Component {
     }
 
     render() {
+        console.log(this.props)
         return(
             <View style={{flex: 1}}>
                 <View style={styles.searchStyle}>
@@ -151,9 +154,9 @@ const styles = StyleSheet.create({
 mapStateToProps = (state) => (
     {
         userLocation: state.appReducer.userLocale,
-        restaurantsList: state.restaurantsReducer.restaurantsList,
-        modalVisible: state.restaurantsReducer.modalVisible,
-        loading: state.restaurantsReducer.loading
+        restaurantsList: state.appServiceReducer.restaurantsList,
+        modalVisible: state.appServiceReducer.modalVisible,
+        loading: state.appServiceReducer.loading
     }
 )
 

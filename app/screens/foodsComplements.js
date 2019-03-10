@@ -43,8 +43,16 @@ class FoodsItems extends Component {
         )
     }
 
-    countNumberOfItems = (active) => {
-        if(this.state.countItems <= 0 && this.state.showInformation) {
+    countNumberOfItems = async (active) => {
+        if(active){
+            await this.setState({
+                countItems: this.state.countItems - 1
+            })
+        } 
+        if(!active) {
+            await this.setState({countItems: this.state.countItems + 1})
+        } 
+        if(this.state.countItems < 0 && this.state.showInformation) {
             Alert.alert(
                 '',
                 "Tudo bem em adicionar mais complemento! Mas será cobrado o valor de x por adicional ok!? ;)",
@@ -53,16 +61,9 @@ class FoodsItems extends Component {
                 ],
                 {cancelable:true}
                 ),
-                this.setState({showInformation: false})
-                this.setState({countItems: this.state.countItems - 1})
-            }
-        else if(active){
-            this.setState({
-                countItems: this.state.countItems - 1
-            })
-            this.state.showInformation && this.state.countItems <= 1 ? this.props.navigation.navigate('SaladsItems') : ''
-        }else {
-            this.setState({countItems: this.state.countItems + 1})
+                await this.setState({showInformation: false})
+        } else {
+            this.state.showInformation && this.state.countItems < 1 ? await this.props.navigation.navigate('SaladsItems') : ''
         }
     }
 
@@ -103,9 +104,9 @@ class FoodsItems extends Component {
 
 mapStateToProps = (state) => (
     {
-        selectedRestaurant: state.restaurantsReducer.selectedRestaurant,
-        sizeSelected: state.restaurantsReducer.sizeSelected,
-        itemsSelected: state.restaurantsReducer.itemsSelected
+        selectedRestaurant: state.appServiceReducer.selectedRestaurant,
+        sizeSelected: state.appServiceReducer.sizeSelected,
+        itemsSelected: state.appServiceReducer.itemsSelected
     }
 )
 

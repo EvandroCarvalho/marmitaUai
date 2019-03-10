@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
 import appReducer from './appReducer'
-import restaurantsReducer from './restaurantsReducer'
+import appServiceReducer from './appServiceReducer'
 
 export default combineReducers({
     appReducer,
-    restaurantsReducer
+    appServiceReducer
 })

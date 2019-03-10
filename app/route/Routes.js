@@ -3,23 +3,27 @@ import { createStackNavigator ,createAppContainer } from 'react-navigation'
 import {Animated, Easing} from 'react-native'
 import WelcomeScreen from '../screens/welcome'
 import ListRestaurantsScreen from '../screens/listRestaurants'
-import RegisterUserLocationScreen from '../screens/locationByAdress'
 import postCodeScreen from '../screens/locationBypostCode'
 import LunchSizeScreen from '../screens/lunchSize'
-
+import LoginScreen from '../screens/login'
+import RegisterScreen from '../screens/register';
 import tabNavigationStack from './tabs'
+import locationByAddressScreen from '../screens/locationByDataAddress'
+import ForgotPasswordScreen from '../screens/forgotPassword'
+import ConfirmScreen from '../screens/confirm'
+
 import defaultThemes from '../styles/defaultThemes';
 
 
 const stack = createStackNavigator({
-    Welcome: {
+    welcome: {
         screen: WelcomeScreen 
     },
-    ListRestaurants: {
+    listRestaurants: {
         screen: ListRestaurantsScreen,
     },
-    RegisterUserLocation: {
-        screen: RegisterUserLocationScreen,
+    postCode: {
+        screen: postCodeScreen,
         navigationOptions: {
             title:'Sua localização',
             headerLeft: null,
@@ -31,13 +35,12 @@ const stack = createStackNavigator({
                 backgroundColor:defaultThemes.colors.yellowTheme
             },
             headerTintColor: defaultThemes.colors.withe
-        }
+        },
     },
-    postCode: {
-        screen: postCodeScreen,
+    locationByAddress: {
+        screen: locationByAddressScreen,
         navigationOptions: {
             title:'Sua localização',
-            headerLeft: null,
             headerTitleStyle: {
                 width: "90%",
                 textAlign: 'center'
@@ -78,9 +81,69 @@ const stack = createStackNavigator({
             }
         },
     },
+    login: {
+        screen: LoginScreen,
+        navigationOptions: ({navigation}) => {
+            return {
+                headerStyle: {
+                    backgroundColor:defaultThemes.colors.withe,
+                    elevation: 0
+                },
+                headerTintColor: defaultThemes.colors.yellowTheme,
+            }
+        },
+    },
+    register: {
+        screen: RegisterScreen,
+        key: 1,
+        navigationOptions: {
+            title: "Cadastro",
+            headerTitleStyle: {
+                width: "90%",
+                textAlign: 'center'
+            },
+            headerStyle: {
+                backgroundColor:defaultThemes.colors.withe,
+                elevation: 0
+            },
+            headerTintColor: defaultThemes.colors.yellowTheme,
+        }   
+    },
+    forgotPassword: {
+        screen: ForgotPasswordScreen,
+        navigationOptions: {
+            title: "Esqueci minha senha",
+            headerTitleStyle: {
+                width: "90%",
+                textAlign: 'center'
+            },
+            headerStyle: {
+                backgroundColor:defaultThemes.colors.withe,
+                elevation: 0
+            },
+            headerTintColor: defaultThemes.colors.yellowTheme,
+        }   
+    },
+    confirm: {
+        screen: ConfirmScreen,
+        key: '2',
+        navigationOptions: {
+            title: null,
+            headerTitleStyle: {
+                width: "90%",
+                textAlign: 'center'
+            },
+            headerStyle: {
+                backgroundColor:defaultThemes.colors.withe,
+                elevation: 0
+            },
+            headerTintColor: defaultThemes.colors.yellowTheme,
+        } 
+
+    }
 }, {
-    ///initialRouteName : 'postCode'
-    transitionConfig: ({scene}) => {
+  //  initialRouteName : 'confim',
+/*     transitionConfig: ({scene}) => {
         if(scene.route.index) {
             return {
             transitionSpec: {
@@ -90,8 +153,7 @@ const stack = createStackNavigator({
                 },    
             }
         }
-    },
-    tabBarOnPress: () => console.log('press')
+    }, */
 })
 
 

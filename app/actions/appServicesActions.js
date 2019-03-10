@@ -1,23 +1,24 @@
-import { loadingModalListRestaurants } from "./types";
+import { LOADING_MODAL_LIST_RESTAURANT } from "./types";
 import { getListOfRestaurants } from '../services/appServices'
-import { restaurantsList,
-    selectedRestaurant,
-    selectedSize,
-    meatSelected,
-    complementSelected,
-    saladsSelected,
-    drinksSelected,
-    initialStateItemsSelected } from './types'
-
+import { RESTAURANTS_LIST,
+    SELECTED_RESTAURANT,
+    SELECTED_SIZE,
+    MEAT_SELECTED,
+    COMPLEMENT_SELECTED,
+    SALADS_SELECTED,
+    DRINKS_SELECTED,
+    INITIAL_STATE_ITEMS_SELECTED,
+    CREATE_USER } from './types'
+import {AsyncStorage} from 'react-native';
 
 export const getRestaurantsList = (userLocation) => {
     return async dispatch => {
         dispatch({
-            type: loadingModalListRestaurants
+            type: LOADING_MODAL_LIST_RESTAURANT
         })
         let response = await getListOfRestaurants(userLocation)
         dispatch({
-            type: restaurantsList,
+            type: RESTAURANTS_LIST,
             payload: response
         })
     }
@@ -26,7 +27,7 @@ export const getRestaurantsList = (userLocation) => {
 export const setSelectedRestaurant = (restaurant, {navigation}) => {
     return dispatch => {
         dispatch({
-            type: selectedRestaurant,
+            type: SELECTED_RESTAURANT,
             payload: restaurant
         })
         navigation.navigate('lunchSize')
@@ -36,7 +37,7 @@ export const setSelectedRestaurant = (restaurant, {navigation}) => {
 export const setSizeChosen = (lunchSize, {navigation, selectedRestaurant}) => {
     return dispatch => {
         dispatch({
-            type: selectedSize,
+            type: SELECTED_SIZE,
             payload: lunchSize
         })
         navigation.navigate('foodsItems', {
@@ -47,34 +48,51 @@ export const setSizeChosen = (lunchSize, {navigation, selectedRestaurant}) => {
 
 export const setMeatsOnObjectItemsSelected = (meats) => {
     return {
-        type: meatSelected,
+        type: MEAT_SELECTED,
         payload: meats
     }
 }
 
 export const setComplementsOnObjectSelected = (complements) => {
     return {
-        type: complementSelected,
+        type: COMPLEMENT_SELECTED,
         payload: complements 
     }
 }
 
 export const setSaladsOnObjectSelected = (salads) => {
     return {
-        type: saladsSelected,
+        type: SALADS_SELECTED,
         payload: salads
     }
 }
 
 export const setDrinksOnObjectSeleted = (drinks) => {
     return {
-        type: drinksSelected,
+        type: DRINKS_SELECTED,
         payload: drinks
     }
 }
 
 export const cleanItemsSelected = () => {
     return {
-        type: initialStateItemsSelected
+        type: INITIAL_STATE_ITEMS_SELECTED
+    }
+}
+
+export const createUser = (dataUser, navigation) => {
+    return dispatch => {
+        dispatch({
+            type: CREATE_USER,
+            payload: dataUser
+        })
+        navigation.navigate('confirm')
+    }
+}
+
+export const authentication = (datauser, {navigation}) => {
+    console.log(datauser)
+    return dispatch => {
+            navigation.navigate('confirm')
     }
 }

@@ -6,6 +6,7 @@ import ConfirmItemsSelect from '../components/confirmItemsSelect'
 import  GridOfItems from '../components/gridOfItems'
 import defaultThemes from '../styles/defaultThemes';
 import {setDrinksOnObjectSeleted} from '../actions/appServicesActions'
+import ButtonCustomer from '../components/buttonCustomer';
 
 class DrinksItems extends Component {
 
@@ -29,6 +30,7 @@ static navigationOptions = {
         ],
         countItems: 2,
         itemSeletect: [],
+        modalvisible: false
     }
 
 
@@ -62,9 +64,8 @@ static navigationOptions = {
     }
 
     render() {
-        this.props.navigation.addListener('willBlur', () => this.props.setDrinksOnObjectSeleted(this.state.itemSeletect))
         return (
-            <View style={{flex: 1, marginLeft: 10, marginRight: 10}}>
+            <View style={{flex: 1, marginLeft: 10, marginRight: 10, opacity: this.state.modalvisible ? 0.2 : 1}}>
                 <Text style={styles.descriptionText}>{`Bebidas`}</Text>
                 <View style={{flex: 1, backgroundColor: defaultThemes.colors.withe}}>
                     <GridOfItems
@@ -73,6 +74,19 @@ static navigationOptions = {
                         renderItem={this.renderList}
                         keyExtractor={items => items.id}
                     />
+                    <View style={{flex: 1, alignItems: 'center', justifyContent: 'flex-end'}}>
+                        <ButtonCustomer
+                            style={styles.submitButton}
+                            text={'Pronto!'}
+                            disabled={true}
+                            onPress={()=> {
+                                this.props.setDrinksOnObjectSeleted(this.state.itemSeletect),
+                                this.props.itemsSelected.selected ? this.props.navigation.navigate('login') :
+                                    alert('Nehum item foi selecionado!')
+                                }
+                            }
+                        />
+                    </View>
                 </View>
             </View>
         )
@@ -81,8 +95,9 @@ static navigationOptions = {
 
 mapStateToProps = (state) => (
     {
-        selectedRestaurant: state.restaurantsReducer.selectedRestaurant,
-        sizeSelected: state.restaurantsReducer.sizeSelected
+        selectedRestaurant: state.appServiceReducer.selectedRestaurant,
+        sizeSelected: state.appServiceReducer.sizeSelected,
+        itemsSelected: state.appServiceReducer.itemsSelected
     }
 )
 
@@ -115,6 +130,12 @@ const styles = StyleSheet.create({
         marginTop: 5,
         padding: 10,
         fontWeight: 'bold'
+    },
+    submitButton: {
+        backgroundColor: defaultThemes.colors.withe,
+        width: 150,
+        borderColor: defaultThemes.colors.yellowTheme,
+        borderBottomColor: defaultThemes.colors.yellowTheme
     }
 })
 

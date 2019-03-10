@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Dimensions, TouchableOpacity, View, Text, StyleSheet, BackHandler, Alert } from 'react-native'
+import { Dimensions, TouchableOpacity, View, Text, StyleSheet, BackHandler, Linking } from 'react-native'
 import { connect } from 'react-redux'
 import { getLocationByCEP, verifyConnection } from '../actions/appActions'
 import { NavigationEvents } from 'react-navigation'
@@ -66,12 +66,11 @@ class LocationByPostCode extends Component {
         >
           <Text style={{textAlign: 'center', color: defaultThemes.colors.withe}}>Consultar</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={{marginTop: 10}}
-          onPress={ () => this.props.navigation.navigate('RegisterUserLocation')}
+        <Text style={styles.addressButtom}
+          onPress={() => this.props.navigation.navigate('locationByAddress')}
         >
-          <Text style={styles.addressButtom}>Não sei meu CEP!</Text>
-        </TouchableOpacity>
+          Não sei meu CEP!
+        </Text>
         {this.checkPostCodeIsValid(this.props)}
       </View>
     </View>

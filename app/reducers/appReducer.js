@@ -1,14 +1,14 @@
 import { 
-    loading,
-    loadingModal,
-    connectionStatus,
-    locationByAndroidSucess,
-    locationByAndroidError,
-    locationByCEPSucess,
-    locationByCEPError,
-    locationByAddressSucess,
-    locationByAddressError
-         } from '../actions/types'
+    LOADING,
+    LOADING_MODAL,
+    CONNECTION_STATUS,
+    LOCATION_BY_ANDROID_SUCCESS,
+    LOCATION_BY_ANDROID_ERROR,
+    LOCATION_BY_CEP_SUCCESS,
+    LOCATION_BY_CEP_ERROR,
+    LOCATION_BY_ADDRESS_SUCCESS,
+    LOCATION_BY_ADDRESS_ERROR,
+    } from '../actions/types'
 
 
 const INITIAL_STATE = {
@@ -24,22 +24,21 @@ const INITIAL_STATE = {
         number: '',
         complement: '',
         neighborhood: '',
-        city: '',
+        city: 'Uberlândia',
         state: '',
-        country: '',
         postCode: ''
     }
 }
 
 export default (state = INITIAL_STATE, action) => {
     switch(action.type) {
-        case loading: 
+        case LOADING: 
             return { ...state, loading: true }
-        case loadingModal:
+        case LOADING_MODAL:
             return { ...state, loading: true, modalVisible: true }
-        case connectionStatus:
+        case CONNECTION_STATUS:
             return { ...state, connectionInfo: action.payload  }
-        case locationByAndroidSucess:
+        case LOCATION_BY_ANDROID_SUCCESS:
             return { ...state,
                 userLocale: { ...state.userLocale,
                     latitude: action.payload.latitude,
@@ -48,15 +47,14 @@ export default (state = INITIAL_STATE, action) => {
                 modalVisible: false,
                 loading: false
             }
-        case locationByAndroidError:
+        case LOCATION_BY_ANDROID_ERROR:
             return { ...state, modalVisible: false, loading: false }
-        case locationByAddressSucess:
+        case LOCATION_BY_ADDRESS_SUCCESS:
             return { ...state,
                 loading: false,
                 userLocale: { ...state.userLocale,
                     city: action.payload.city,
                     complement: action.payload.complement,
-                    country: action.payload.country,
                     latitude: action.payload.latitude,
                     longitude: action.payload.longitude,
                     neighborhood: action.payload.neighborhood,
@@ -67,14 +65,13 @@ export default (state = INITIAL_STATE, action) => {
                 },
                 errorGetLocationAdress: false
             }
-        case locationByAddressError:
+        case LOCATION_BY_ADDRESS_ERROR:
             return { ...state, modalVisible: false, loading: false, errorGetLocationAdress: true }   
-        case locationByCEPSucess: 
+        case LOCATION_BY_CEP_SUCCESS: 
             return { ...state,
                 userLocale: { ...state.userLocale,
                     city: action.payload.city,
                     complement: action.payload.complement,
-                    country: action.payload.country,
                     latitude: action.payload.latitude,
                     longitude: action.payload.longitude,
                     neighborhood: action.payload.neighborhood,
@@ -87,7 +84,7 @@ export default (state = INITIAL_STATE, action) => {
                 modalVisible: false,
                 errorGetLocationCEP: false
             }   
-        case locationByCEPError:
+        case LOCATION_BY_CEP_ERROR:
             return { ...state, modalVisible: false, loading: false, errorGetLocationCEP: true}
         default:
             return state

@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
 
 mapStateToProps = (state) => (
     {
-        selectedRestaurant: state.restaurantsReducer.selectedRestaurant
+        selectedRestaurant: state.appServiceReducer.selectedRestaurant
     }
 )
 
