@@ -27,7 +27,7 @@ const INITIAL_STATE = {
         city: 'Uberlândia',
         state: '',
         postCode: ''
-    }
+    },
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -42,7 +42,10 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state,
                 userLocale: { ...state.userLocale,
                     latitude: action.payload.latitude,
-                    longitude: action.payload.longitude
+                    longitude: action.payload.longitude,
+                    street: action.payload.street,
+                    neighborhood: action.payload.neighborhood,
+                    city: action.payload.city
                 },
                 modalVisible: false,
                 loading: false

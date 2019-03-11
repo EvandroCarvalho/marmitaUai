@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, BackHandler } from 'react-native'
 import  ItemSizeOptiom from '../components/ItemSizeOptiom'
 import { connect } from 'react-redux'
 import  { setSizeChosen } from '../actions/appServicesActions'
+import {StackActions} from 'react-navigation'
 
 class LunchSize extends Component {
 
@@ -34,6 +35,8 @@ class LunchSize extends Component {
     )
 
     render() {
+        this.props.navigation.addListener('willFocus', () => BackHandler.addEventListener('hardwareBackPress', 
+            () => this.props.navigation.dispatch(StackActions.pop({n:1}))))
         return (
             <View style={{flex: 1}}>
                 <Text style={{textAlign: 'center', fontFamily:'Roboto', fontSize: 18}}>Escolha uma opção de tamanho</Text>

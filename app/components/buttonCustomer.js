@@ -18,7 +18,7 @@ class ButtomCustomer extends React.Component {
     return (
       <TouchableOpacity
         style={[styles.buttom, this.props.style, {opacity: this.props.disabled ? 1 : 0.5}]}
-        disabled={ !this.props.disabled }
+        disabled={!this.props.disabled}
         onPress={() => {
           this.props.onPress()
           this.setState({loading: false})

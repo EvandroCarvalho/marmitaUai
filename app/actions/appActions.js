@@ -10,7 +10,7 @@ import {
     LOCATION_BY_ADDRESS_SUCCESS,
     LOCATION_BY_ADDRESS_ERROR
          } from './types'
-import { consultByAdress } from '../services/googleAPIService'
+import { consultByAdress, consultByLatLong } from '../services/googleAPIService'
 import { consultViaCepService } from '../services/viaCepService'
 
 
@@ -27,13 +27,24 @@ export const verifyConnection = () => {
 
 export const getLocationByAndroidAPI = ({navigation}) => {
     return dispatch => {
+        console.log('buscando')
         dispatch({
             type: LOADING_MODAL
         })
         navigator.geolocation.getCurrentPosition(
-            ({coords}) => {
-                let { latitude, longitude } = coords
-                getLocationByAndroidAPISucesss(dispatch, {latitude, longitude}, navigation)
+            async ({coords}) => {
+                let {results} = await consultByLatLong(coords)
+                let address = results[0].formatted_address.split('-')[0].split(',')
+                address = [...address, ...results[0].formatted_address.split('-')[1].split(',')]
+                console.log(address)
+                let location = {
+                    latitude: coords.latitude,
+                    longitude: coords.longitude,
+                    street: address[0] || '',
+                    neighborhood: address[2] || '',
+                    city: address[3] || ''
+                }
+                getLocationByAndroidAPISucesss(dispatch, location, navigation)
             },
             (error) => { getLocationByAndroidAPIError(dispatch, navigation) },
             {

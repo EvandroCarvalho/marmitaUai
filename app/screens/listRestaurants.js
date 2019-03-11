@@ -51,11 +51,6 @@ class ListRestaurants extends Component {
         }).start()
     }
 
-    handleBackPress = () => {
-        BackHandler.exitApp()
-        return true
-    }
-
     waitingGetList = ({modalVisible, loading}) => {
         return (
             <View>
@@ -86,7 +81,11 @@ class ListRestaurants extends Component {
     }
 
     render() {
-        console.log(this.props)
+        this.props.navigation.addListener('willFocus', () => BackHandler.addEventListener(
+            'hardwareBackPress', () => {
+                BackHandler.exitApp()
+                return false
+        }))
         return(
             <View style={{flex: 1}}>
                 <View style={styles.searchStyle}>

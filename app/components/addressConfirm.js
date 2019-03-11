@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react'
 import { View, Text, StyleSheet, TextInput, Image, Animated, Easing } from 'react-native'
 import defaultThemes from '../styles/defaultThemes'
-import ButtonCustomer from './buttonCustomer';
+import ButtonCustomer from './buttonCustomer'
+import {connect} from 'react-redux'
+import {confirmAddress} from '../actions/appServicesActions'
 
 
 class AddressConfirm extends PureComponent {
@@ -37,7 +39,7 @@ class AddressConfirm extends PureComponent {
             <Animated.View style={[this.state.anim.getLayout(), styles.container]}>
                 <View style={styles.titleItems}>
                     <Image
-                        style={{width:40, height: 40}}
+                        style={{width:40, height: 40, marginRight: 10}}
                         source={require('../assets/images/placeholder.png')}
                     />
                     <Text style={styles.titleMenu}>Local da entrega</Text>
@@ -83,7 +85,7 @@ class AddressConfirm extends PureComponent {
                             underlineColorAndroid='#d3d3d3'
                             autoCorrect={false}
                             onChangeText={(text) => this.setState({
-                                address: {...this.state.address, city: text }
+                                address: {...this.state.address, neighborhood: text }
                             })}
                         />
                     </View>
@@ -98,11 +100,13 @@ class AddressConfirm extends PureComponent {
                             })}
                         />
                     </View>
-                    <ButtonCustomer
-                        text={'Confirmar'}
-                        disabled={true}
-                        onPress={() => alert('Em construção')}
-                    />
+                    <View style={styles.inputView}>
+                        <ButtonCustomer
+                            text={'Confirmar'}
+                            disabled={true}
+                            onPress={() => this.props.confirmAddress(this.state.address, this.props)}
+                        />
+                    </View>
                 </View>
             </Animated.View>
         )
@@ -112,28 +116,24 @@ class AddressConfirm extends PureComponent {
 const styles = StyleSheet.create({
     titleMenu: {
         textAlign: 'center',
-        padding: 10,
         color: defaultThemes.colors.yellowTheme,
         fontSize: 18,
         fontFamily: 'Roboto',
         fontWeight: 'bold',
     },
     titleItems: {
-        flex:1,
         flexDirection: 'row',
         backgroundColor: defaultThemes.colors.withe,
-        borderTopWidth: 1,
         borderBottomWidth: 1,
         borderColor: defaultThemes.colors.yellowTheme,
-        padding: 10,
         alignItems: 'center',
         justifyContent: 'center',
+        padding: 10,
         marginBottom: 10
     },
     title: {
         fontFamily: 'Roboto',
-        fontSize: 15
-        
+        fontSize: 15 
     },
     container: {
         flex:1,
@@ -147,4 +147,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default AddressConfirm
+export default connect(null, {confirmAddress})(AddressConfirm)

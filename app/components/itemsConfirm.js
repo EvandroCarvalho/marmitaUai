@@ -1,9 +1,11 @@
 import React, { PureComponent } from 'react'
-import { View, Text, Image, StyleSheet } from 'react-native'
+import { View, Text, Image, StyleSheet, Dimensions } from 'react-native'
 import defaultThemes from '../styles/defaultThemes'
 import ButtonCustomer from './buttonCustomer'
+import { ScrollView } from 'react-native-gesture-handler';
 
 
+const {width, height} = Dimensions.get('window')
 
 class ConfirmItems extends PureComponent {
 
@@ -16,7 +18,7 @@ class ConfirmItems extends PureComponent {
                         style={{flexDirection: 'row', alignItems:'center', marginLeft: 20}} 
                     >
                         <Image
-                            style={{width:10, height: 10}}
+                            style={{width:10, height: 10, marginRight: 10}}
                             source={require('../assets/images/icon_check.png')}
                         />
                         <Text key={key} style={{fontSize: 15, padding: 10, textAlign: 'center'}}>{item.nome}</Text>
@@ -34,7 +36,7 @@ class ConfirmItems extends PureComponent {
         const itemsSelected = this.props.itemsSelected
         console.log(this.props)
         return (
-            <View>
+            <View style={{flex: 1}}>
                 <View style={styles.titleItems}>
                     <Image
                         style={{width:40, height: 40}}
@@ -42,7 +44,7 @@ class ConfirmItems extends PureComponent {
                     />
                     <Text style={styles.titleMenu}>Seu Pedido</Text>
                 </View>
-                <View style={{marginLeft: 10}}>
+                <ScrollView style={{marginLeft: 10}}>
                     <View>
                         <Text style={styles.title}>Carne:</Text>
                         {this.checkListItems(itemsSelected.meats)}
@@ -59,8 +61,8 @@ class ConfirmItems extends PureComponent {
                         <Text style={styles.title}>Bebida:</Text>
                         {this.checkListItems(itemsSelected.drinks)}
                     </View>
-                </View>
-                <View style={{flexDirection: 'row', justifyContent: 'space-between', borderTopWidth: 1, borderTopColor: defaultThemes.colors.yellowTheme}}>
+                </ScrollView>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                     <ButtonCustomer
                         text={'Editar pedido'}
                         disabled={true}
@@ -80,26 +82,24 @@ class ConfirmItems extends PureComponent {
 const styles = StyleSheet.create({
     titleMenu: {
         textAlign: 'center',
-        padding: 10,
         color: defaultThemes.colors.yellowTheme,
         fontSize: 18,
         fontFamily: 'Roboto',
         fontWeight: 'bold',
+        padding: 10,
+        marginBottom: 10
     },
     titleItems: {
-        flex:1,
         flexDirection: 'row',
         backgroundColor: defaultThemes.colors.withe,
-        borderTopWidth: 1,
         borderBottomWidth: 1,
         borderColor: defaultThemes.colors.yellowTheme,
-        padding: 10,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     title: {
         fontFamily: 'Roboto',
-        fontSize: 15
+        fontSize: 18
         
     }
 })

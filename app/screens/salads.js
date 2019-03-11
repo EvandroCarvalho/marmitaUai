@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { View, Text, StyleSheet, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import FoodItemComponent from '../components/foodItemComponent';
-import ConfirmItemsSelect from '../components/confirmItemsSelect'
 import  GridOfItems from '../components/gridOfItems'
 import defaultThemes from '../styles/defaultThemes'
 import { setSaladsOnObjectSelected } from '../actions/appServicesActions'

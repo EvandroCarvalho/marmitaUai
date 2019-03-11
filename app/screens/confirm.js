@@ -27,6 +27,7 @@ class Confirm extends React.PureComponent {
         } else {
             return(
                 <AddressConfirm
+                    navigation={navigation}
                     userLocale={userLocale}
                 />
             )
@@ -36,10 +37,7 @@ class Confirm extends React.PureComponent {
     render(){  
         return(
             <View style={{flex: 1}}>
-                <ScrollView>
-                    {this.changeComponent(this.state.confirm, this.props)}
-                </ScrollView>
-                
+                {this.changeComponent(this.state.confirm, this.props)}                
             </View>
         )
     }

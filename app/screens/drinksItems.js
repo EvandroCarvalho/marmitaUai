@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import FoodItemComponent from '../components/foodItemComponent';
-import ConfirmItemsSelect from '../components/confirmItemsSelect'
 import  GridOfItems from '../components/gridOfItems'
 import defaultThemes from '../styles/defaultThemes';
 import {setDrinksOnObjectSeleted} from '../actions/appServicesActions'
@@ -10,17 +9,9 @@ import ButtonCustomer from '../components/buttonCustomer';
 
 class DrinksItems extends Component {
 
-/*     static navigationOptions = ({navigation}) => {
-        const { params } = navigation.state;
-        console.log(params.title)
-        return {
-        title: `${params.title}`
-        }
+    static navigationOptions = {
+        header: null
     }
- */
-static navigationOptions = {
-    header: null
-}
     state = {
         items: [
             {id: '1', nome: 'Coca-Cola'},
@@ -63,6 +54,14 @@ static navigationOptions = {
         }
     }
 
+    setRouter = ({userAuthentication, navigation}) => {
+        if(userAuthentication.isAutheticated) {
+            navigation.navigate('confirm')
+        } else {
+            navigation.navigate('login')
+        }
+    }
+
     render() {
         return (
             <View style={{flex: 1, marginLeft: 10, marginRight: 10, opacity: this.state.modalvisible ? 0.2 : 1}}>
@@ -81,7 +80,7 @@ static navigationOptions = {
                             disabled={true}
                             onPress={()=> {
                                 this.props.setDrinksOnObjectSeleted(this.state.itemSeletect),
-                                this.props.itemsSelected.selected ? this.props.navigation.navigate('login') :
+                                this.props.itemsSelected.selected ? this.setRouter(this.props) :
                                     alert('Nehum item foi selecionado!')
                                 }
                             }
@@ -97,7 +96,8 @@ mapStateToProps = (state) => (
     {
         selectedRestaurant: state.appServiceReducer.selectedRestaurant,
         sizeSelected: state.appServiceReducer.sizeSelected,
-        itemsSelected: state.appServiceReducer.itemsSelected
+        itemsSelected: state.appServiceReducer.itemsSelected,
+        userAuthentication: state.appServiceReducer.userAuthentication
     }
 )
 

@@ -6,7 +6,11 @@ import { RESTAURANTS_LIST,
     COMPLEMENT_SELECTED,
     SALADS_SELECTED,
     DRINKS_SELECTED,
-    INITIAL_STATE_ITEMS_SELECTED } from '../actions/types'
+    INITIAL_STATE_ITEMS_SELECTED,
+    ORDER_TO_RESTAURANT,
+    CONFIRM_ADDRESS,
+    USER_AUTEHTICATION
+    } from '../actions/types'
 
 const INITIAL_STATE = {
     restaurantsList: [],
@@ -14,13 +18,31 @@ const INITIAL_STATE = {
     modalVisible: false,
     selectedRestaurant: {},
     sizeSelected: {},
+    userAuthentication: {
+        userName: '',
+        password: '', 
+        isAutheticated: false,
+    },
+    dataUser: {
+        name: '',
+        telephone: ''
+    },
     itemsSelected: {
         selected: false,
         meats: [],
         complements: [],
         salads: [],
         drinks: []
-    }
+    },
+    orderToRestaurant: {},
+    addressToSend: {
+        city: '',
+        complement: '',
+        neighborhood: '',
+        number: '',
+        street: ''
+    },
+    
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -43,6 +65,21 @@ export default (state = INITIAL_STATE, action) => {
             return {...state, itemsSelected: {...state.itemsSelected, drinks: action.payload, selected: true}}
         case INITIAL_STATE_ITEMS_SELECTED:
             return {...state, itemsSelected: INITIAL_STATE.itemsSelected}
+        case USER_AUTEHTICATION:
+            return {...state, userAuthentication: {...state.userAuthentication, userName: action.userName, password: action.password, isAutheticated: true}}
+        case ORDER_TO_RESTAURANT:
+            return {...state, orderToRestaurant: action.payload}
+        case CONFIRM_ADDRESS:
+            return {...state,
+                addressToSend: {
+                    ...state.addressToSend,
+                    city: action.payload.city,
+                    complement: action.payload.complement,
+                    neighborhood: action.payload.neighborhood,
+                    number: action.payload.number,
+                    street: action.payload.street
+                }
+            }
         default:
             return state
     }

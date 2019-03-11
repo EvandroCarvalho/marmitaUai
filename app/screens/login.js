@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TextInput, StyleSheet, Image, ScrollView } from 'react-native'
+import { View, Text, TextInput, StyleSheet, Image } from 'react-native'
 import {connect} from 'react-redux'
 import ButtonCustomer from '../components/buttonCustomer'
 import defaultThemes from '../styles/defaultThemes'
@@ -9,7 +9,7 @@ class Login extends React.PureComponent {
 
     state = {
         dataUser: {
-            user: '',
+            userName: '',
             password: ''
         }
     }
@@ -53,7 +53,7 @@ class Login extends React.PureComponent {
                             Esqueci minha senha!
                         </Text>
                     </View>
-                    <View style={{flex: 0.4, alignItems: 'center', justifyContent: 'flex-end', marginTop: 30}}>
+                    <View style={{flex: 0.7, alignItems: 'center', justifyContent: 'flex-end', marginTop: 30}}>
                         <ButtonCustomer
                             style={styles.loginButton}
                             text={'logar'}
@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
         width: 300,
         borderColor: defaultThemes.colors.yellowTheme,
         borderBottomColor: defaultThemes.colors.yellowTheme,
+        marginTop: 100
     }
 
 })

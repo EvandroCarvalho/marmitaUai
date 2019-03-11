@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import { Dimensions, ScrollView, Animated, StyleSheet, TextInput } from 'react-native'
+import { Dimensions, ScrollView, Animated, StyleSheet, TextInput, ToastAndroid } from 'react-native'
 import ButtomCustomer from '../components/buttonCustomer'
 import { connect } from 'react-redux'
 
@@ -76,7 +76,10 @@ class Register extends PureComponent {
           />
           <ButtomCustomer
             text='Salvar'
-            onPress={()=> this.props.createUser(this.state.dataUser, this.props.navigation)}
+            onPress={()=> {
+              ToastAndroid.show('Seu usuário foi criado com sucesso, em breve você recebera um e-mail de confirmação', ToastAndroid.LONG)
+              this.props.createUser(this.state.dataUser, this.props.navigation)
+            }}
             disabled={ !!(this.state.dataUser.email && this.state.dataUser.password && this.state.dataUser.name && this.state.dataUser.telephone) }
           />
         </ScrollView>

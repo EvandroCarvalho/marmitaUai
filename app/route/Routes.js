@@ -6,13 +6,14 @@ import ListRestaurantsScreen from '../screens/listRestaurants'
 import postCodeScreen from '../screens/locationBypostCode'
 import LunchSizeScreen from '../screens/lunchSize'
 import LoginScreen from '../screens/login'
-import RegisterScreen from '../screens/register';
+import RegisterScreen from '../screens/register'
 import tabNavigationStack from './tabs'
 import locationByAddressScreen from '../screens/locationByDataAddress'
 import ForgotPasswordScreen from '../screens/forgotPassword'
 import ConfirmScreen from '../screens/confirm'
+import ShoppingCartScreen from '../screens/shoppingCart'
 
-import defaultThemes from '../styles/defaultThemes';
+import defaultThemes from '../styles/defaultThemes'
 
 
 const stack = createStackNavigator({
@@ -126,7 +127,6 @@ const stack = createStackNavigator({
     },
     confirm: {
         screen: ConfirmScreen,
-        key: '2',
         navigationOptions: {
             title: null,
             headerTitleStyle: {
@@ -140,9 +140,24 @@ const stack = createStackNavigator({
             headerTintColor: defaultThemes.colors.yellowTheme,
         } 
 
+    },
+    shoppingCart: {
+        screen: ShoppingCartScreen,
+        navigationOptions: {
+            title: null,
+            headerTitleStyle: {
+                width: "90%",
+                textAlign: 'center'
+            },
+            headerStyle: {
+                backgroundColor:defaultThemes.colors.withe,
+                elevation: 0
+            },
+            headerTintColor: defaultThemes.colors.yellowTheme,
+        } 
     }
 }, {
-  //  initialRouteName : 'confim',
+ // initialRouteName : 'listRestaurants',
 /*     transitionConfig: ({scene}) => {
         if(scene.route.index) {
             return {

@@ -1,6 +1,6 @@
-import { LOADING_MODAL_LIST_RESTAURANT } from "./types";
 import { getListOfRestaurants } from '../services/appServices'
 import { RESTAURANTS_LIST,
+    LOADING_MODAL_LIST_RESTAURANT,
     SELECTED_RESTAURANT,
     SELECTED_SIZE,
     MEAT_SELECTED,
@@ -8,7 +8,10 @@ import { RESTAURANTS_LIST,
     SALADS_SELECTED,
     DRINKS_SELECTED,
     INITIAL_STATE_ITEMS_SELECTED,
-    CREATE_USER } from './types'
+    USER_AUTEHTICATION,
+    CREATE_USER,
+    CONFIRM_ADDRESS,
+    ORDER_TO_RESTAURANT } from './types'
 import {AsyncStorage} from 'react-native';
 
 export const getRestaurantsList = (userLocation) => {
@@ -91,8 +94,29 @@ export const createUser = (dataUser, navigation) => {
 }
 
 export const authentication = (datauser, {navigation}) => {
-    console.log(datauser)
     return dispatch => {
-            navigation.navigate('confirm')
+        dispatch({
+            type: USER_AUTEHTICATION,
+            payload: datauser
+        })
+        navigation.navigate('confirm')
+    }
+}
+
+export const confirmAddress = (address, {navigation}) => {
+    console.log(address)
+    return dispatch => {
+        dispatch({
+            type: CONFIRM_ADDRESS,
+            payload: address
+        })
+        navigation.navigate('shoppingCart')
+    }
+}
+
+export const sendOrderToRestaurant = (dataOrder) => {
+    return {
+        type: ORDER_TO_RESTAURANT,
+        payload: dataOrder
     }
 }
